@@ -1,0 +1,45 @@
+
+.SingleBettingBox {
+    width: 80%;
+    margin: auto;
+    border-radius: 3px;
+    padding: 3px;
+    background-color: white;
+    color: rgb(10, 10, 10);
+    box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.overallButtons {
+    width: 100%;
+    line-height: 30px;
+    order: 0;
+    margin-top: 5px;
+}
+
+.noTips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 15px;
+    width: 100%;
+    padding: 10px;
+}
+
+.result {
+    width: 100%;
+    margin: 15px auto 0px auto;
+    font: 17px Georgia, serif;
+    padding: 5px;
+    text-align: center;
+    font-weight: 600;
+}
+
+@media (max-width: 500px){
+    .SingleBettingBox {
+        width: 98%;
+
+    }
+}

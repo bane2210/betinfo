@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+}
+
+.awayBox {
+    width: 48%;
+    /*max-width: 400px;*/
+    padding: 3px;
+    min-height: 200px;
+    border-radius: 5px;
+    color: rgb(10, 10, 10);
+    background-color: white;
+    margin: 20px auto 20px auto;
+    box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.4);
+
+}
+
+.title {
+    text-align: center;
+    min-height: 30px;
+    font: italic bold 18px Georgia, serif;
+    color: rgb(10, 10, 10);
+    margin: 0 2px 0 2px;
+    line-height: 30px;
+    background: linear-gradient(45deg, #ECEAEA, #BEB9B9);
+}
+
+@media (max-width: 600px){
+    .awayBox {
+        width: 99%;
+    }
+}

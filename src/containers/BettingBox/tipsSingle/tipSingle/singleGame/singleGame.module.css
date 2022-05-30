@@ -1,0 +1,299 @@
+.GamesLine {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.GamesLineTop {
+    width: calc(100% - 50px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-right: 25px;
+
+}
+
+.GamesLineBottom {
+
+    width: calc(100% - 115px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-left: 1px solid gray;
+    margin-top: 5px;
+    padding: 0px 10px;
+
+}
+
+
+
+
+*{
+    box-sizing: border-box;
+}
+
+.tipsLine {
+    width: 95%;
+    margin: auto;
+    height: min-content;
+    display: flex;
+    flex-flow: wrap row;
+    /* border: 1px solid; */
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    position: relative;
+    font-weight: 400;
+    border: 1px solid #c5c0c0;
+
+
+}
+
+.tipsLineContainer {
+    width: 95%;
+    display: flex;
+    flex-flow: wrap row;
+    position: relative;
+    margin: 5px auto;
+}
+
+.firstLine {
+    width: 100%;
+    display: flex;
+}
+
+.tip {
+    width: 99%;
+    display: flex;
+    text-align: center;
+    font: 14px;
+    background: linear-gradient(45deg, #ECEAEA, #eeeded);
+    padding: 3px;
+    border-radius: 3px 3px 0px 0px;
+    margin: auto;
+    justify-content: space-between;
+    padding-right: 30px;
+}
+
+.countryComp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+.teamNames {
+    margin: 0px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 2px;
+    font-weight: 600;
+}
+
+.tipInner {
+    display: inline-block;
+    padding: 2px;
+    font-weight: 400;
+}
+
+.kickOf {
+    width: 110px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+}
+
+.kickOfMob {
+    position: relative;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+}
+
+.chance {
+    width: 110px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.chanceBr {
+    color: rgba(108, 160, 26, 1.0);
+    font-weight: 400;
+    display: contents;
+    font-weight: 700;
+}
+
+.explanationTxt {
+    width: 110px;
+    display: flex;
+    align-items: center;
+}
+
+.explanation {
+    width: 95%;
+    display: flex;
+    flex-flow: column;
+    font-weight: 400;
+    border-top: 1px dotted gray;
+    margin-top: 10px;
+}
+
+.explanationLine {
+    width: 98%;
+    text-align: left;
+    padding-left: 10%;
+    margin: 3px;
+    border-bottom: 1px solid #e5e5e5;
+
+}
+
+.chanceBack {
+    width: 160px;
+    height: 10px;
+    background-color: #c8c6bb;
+    border-radius: 10px;
+    position: relative;
+}
+
+.chanceFront {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 10px;
+    background-color: rgba(108, 160, 26, 0.9);
+    margin: auto;
+    border-radius: 10px;
+    display: block;
+}
+
+
+.final {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.correct {
+    width: 100%;
+    height: 100%;
+}
+
+.wrong {
+    width: 70%;
+    height: 70%;
+    margin-top: 22%;
+}
+
+.flagContainer {
+    display: inline-block;
+    width: 30px;
+
+}
+
+.flagContainer img {
+    margin: 0px;
+
+}
+
+.greenRes {
+    color: green;
+}
+
+.redRes {
+    color: #c10f0f;
+}
+
+.FullDetails {
+    width: 180px;
+    margin: 5px auto 0px auto;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 1px 0;
+    font-size: 12px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+
+
+@media (max-width: 700px) {
+
+    .GamesLineTop {
+        justify-content: center;
+    }
+
+    .countryComp, .kickOfMob, .explanationTxt {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .teamNames {
+        font-size: 14px;
+    }
+
+    .kickOf {
+        display: none;
+    }
+
+    .kickOfMob {
+        display: block;
+    }
+    
+    .chance {
+        flex-flow: column;
+        margin-right: 5px;
+    }
+}
+
+
+
+
+@media (max-width: 500px) {
+
+    .GamesLineTop {
+        justify-content: center;
+        width: 100%;
+        padding-right: 0px;
+    }
+    
+    .explanationLine {
+        width: 98%;
+        margin: auto;
+        padding: 3px;
+    }
+
+    .tipsLineContainer {
+        width: 100%;
+    }
+
+    .tip {
+        padding-right: 10px;
+    }
+
+    .final {
+        top: 10px;
+    }
+
+    .countryComp, .kickOf, .explanationTxt {
+        width: 100%;
+        justify-content: center;
+        padding-right: 5px;
+    }
+}
+
+

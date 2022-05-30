@@ -1,0 +1,46 @@
+.noGames {
+    text-align: center;
+    font-size: 18px;
+    color: orange;
+    font-weight: 400;
+    width: 100%;
+    min-height: 50px;
+    margin-top: 50px;
+}
+
+.topExpl {
+    background: #232323;
+    padding: 8px;
+    margin: 10px auto;
+    color: orange;
+    text-align: center;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 16px;
+}
+
+
+.SortByLine {
+    font-weight: 400;
+    box-sizing: border-box;
+    font-size: 14px;
+    align-items: center;
+    /*background: linear-gradient(45deg, #ECEAEA, #eeeded);*/
+    margin: 5px auto 15px auto;
+    display: flex;
+    justify-content: space-evenly;
+    width: 60%;
+    min-width: 300px;
+    min-height: 22px;
+
+}
+
+.label {
+    width: 100px;
+    color: black;
+    font-weight: 500;
+    
+}
+
+.Container {
+    margin-top: 20px;
+}

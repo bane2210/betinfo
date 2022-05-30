@@ -1,0 +1,27 @@
+.bodyApp{
+    max-width: 1100px;
+    margin: auto;
+    background-color: white;
+    display: block;
+  }
+
+  
+  .scrollTop {
+    display: none;
+    position: fixed; 
+    width: 46px;
+    height: 46px;
+    bottom: 20px;
+    right: 20px;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000000;
+    cursor: pointer;
+    animation: fadeIn 0.3s;
+    transition: opacity 0.4s;
+    opacity: 0.9;
+    font-size: 18px;
+    color: orange;
+    background: linear-gradient(45deg, #2b2a2a, #9b9a9a);
+    border-radius: 5px;
+  }

@@ -1,0 +1,17 @@
+.ContentBox{
+    min-height: 500px;
+    flex: 70%;
+    background-color: white;
+    padding: 0px 5px;
+    margin: 0px 5px 0px 5px;
+    overflow: auto;
+    box-sizing: border-box;
+
+}
+
+@media screen and (max-width: 500px){
+    .ContentBox {
+        margin: 2px;
+
+    }
+}

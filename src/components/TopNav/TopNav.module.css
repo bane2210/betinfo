@@ -1,0 +1,164 @@
+.all {
+    display: inline;
+}
+
+.TopNav {
+    height: 45px;
+    background: #232323;
+    width: 100%;
+    position: fixed;
+    transform: translate3d(0, 0, 0);
+    top: 0;
+    left: 0;
+    z-index: 10;
+    color: white;
+    
+}
+
+.topNavCont{
+    max-width: 900px;
+    height: 45px;
+    margin: auto;
+}
+
+.shortLogo{
+    display: none;
+}
+
+
+
+.NavUL{
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    list-style: none;
+    font-size: 20px;
+    color: white;
+}
+
+
+.NavigationItems {
+    margin: 0px 0px 0px 10px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    min-height: 45px;
+    justify-content: space-evenly;
+    
+}
+
+.open {
+    box-sizing: border-box;
+    margin: 45px 0px 0px 0px;
+    position: absolute;
+    width: 100%;
+}
+
+.close {
+    box-sizing: border-box;
+}
+
+
+.NavigationItems li {
+    margin: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    display: block;
+    /*flex: 25%;*/
+    color: white;
+    background: #232323;
+    width: 100%;
+    text-align: center;
+    background-color: #232323;
+}
+
+
+
+.NavigationItems li a {
+    color: white;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.NavigationItems li a:hover,
+.NavigationItems li a:active,
+.NavigationItems li a.active {
+    color: orange;
+
+}
+
+.Icon {
+    display: none;
+}
+
+
+
+@media (min-width: 500px) {
+    .NavigationItems {
+        margin: 0px 0px 0px 100px;
+        flex-flow: row;
+    }
+
+ 
+}
+
+@media screen and (max-width: 499px){
+    .NavigationItems li:not(:first-child) {display: none;}
+
+    .NavigationItems.open li {
+        margin: 0px;
+        box-sizing: border-box;
+        display: block;
+        /*flex: 25%;*/
+        color: white;
+        width: 100%;
+        padding: 10px;
+        text-align: left;
+        font-size: 20px;
+    
+    }
+
+    .NavigationItems.open {
+        display: flex;
+        background: #232323;
+        min-height: 500px;
+        justify-content: flex-start;
+    }
+
+    .NavigationItems.open a {
+        width: 100%;
+        color: white;
+        text-decoration: none;
+        box-sizing: border-box;
+        padding: 0px 0px 0px 15px;
+    }
+
+    .NavigationItems.close {
+        display: none;
+    }
+
+    .NavigationItems {
+        display: none;
+    }
+    
+    .NavigationItems.close li:not(:first-child) {display: none;}
+    .NavigationItems.open.close li:not(:first-child) {display: none;}
+
+    .Icon {
+        display: block;
+        position: absolute;
+        right: 50px;
+        top: 12px;
+        font-size: 18px;
+    }
+
+    .shortLogo{
+        width: 80px;
+        display: block;
+        margin: 3px 5px 5px calc(50% - 50px);
+        float: left;
+    }
+
+
+}

@@ -1,0 +1,29 @@
+.button {
+    width: 140px;
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #e0dfdf;
+    box-sizing: border-box;
+    padding: 0px 5px;
+    margin: 10px 5px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4);
+    font-size: 14px;
+}
+
+.button:hover {
+    font-size: 15px;
+}
+
+.active {
+    background: #e0dfdf;
+    font-weight: 500;
+    box-sizing: border-box;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 500px){
+    .button {
+        font-size: 14px;
+    }
+}

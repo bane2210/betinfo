@@ -1,0 +1,42 @@
+.graphBox {
+    height: 17px;
+    width: 200px;
+    margin: 8px 10%;
+    position: relative;
+    display: inline-block;
+    
+}
+
+.backGraph {
+    width: 100%;
+    height: 100%;
+    background-color: #E0DFDF;
+    border-radius: 10px;
+    text-align: right;
+    font-size: 13px;
+    line-height: 17px;
+    padding-right: 2px;
+}
+
+.frontGraph {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color:rgb(70,99,24, 0.8);
+    height: 100%;
+    border-radius: 10px;
+}
+
+.linePts {
+    display: inline-block;
+    margin: 8px 0px 2px 50%;
+    border-left: 1px solid black;
+    width: 5px;
+    height: 25px;
+}
+
+.frontPts {
+    display: inline-block;
+    margin: 0px 0px 10px 50%;
+    min-width: 45px;
+}

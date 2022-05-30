@@ -1,0 +1,239 @@
+
+.FootballTableFirst {
+	text-align: center;
+	font-size: 13px;
+	margin: 2px 5px 10px 5px;
+	display: inline;
+	
+}
+.FootballTableSecond {
+	text-align: center;
+	font-size: 13px;
+	margin: 2px 5px 10px 5px;
+	display: inline;
+	overflow: scroll;
+
+}
+
+.FootballTableFirst td.tableName {
+	white-space: nowrap;
+    text-overflow: ellipsis;
+	max-width: 100px;
+	overflow: hidden;
+}
+
+.legendArrow {
+ display: none;
+}
+
+.selectTeam {
+	background: rgba(107, 221, 14, 0.2);
+}
+
+@media screen and (max-width: 630px) {
+	
+	.legendArrow {
+	 text-align: center;
+	 margin-left: 120px;
+	 display: block;
+	}
+}
+
+
+
+@media screen and (max-width: 660px) {
+	.FootballTableFirst {
+		width: 120px;
+		text-align: center;
+		font-size: 13px;
+		margin: 0px;
+		display: inline;
+		padding: 2px;
+
+	}
+	
+	.FootballTableSecond {
+		width: calc(100% - 155px);
+		text-align: center;
+		font-size: 13px;
+		margin: 0px;
+		display: inline;
+		overflow: scroll;
+		position: absolute;
+		padding: 0px;
+		
+
+	}
+	
+
+}
+
+
+
+.footballTableFull td {
+	padding: 2px;
+	min-width: 20px;
+	font-size: 14px;
+}
+
+
+.footballTableFull th {
+	padding: 2px;
+	min-width: 20px;
+	font-size: 13px;
+}
+
+
+.tableStyleBorder {
+	border-right: 1px solid #d5d3d4;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+
+.FootballTable th.borderLeft, .FootballTable td.borderLeft {
+	border-left: 1px solid #d5d3d4;
+}
+
+.FootballTable {
+	margin: 20px auto 3px auto;
+}
+
+.legendTable {
+	font-size: 12px;
+	padding: 5px 5px 5px 15px;
+	margin: 0px auto
+}
+
+
+.tableName {
+	text-align: left;
+	padding-left: 10px;
+}
+
+.tablePosition {
+    border-radius: 6px;
+    background-color: #adaaaa;
+	margin: 5px;
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 12px !important;
+}
+
+.tableBottom {
+display: none;
+
+}
+
+
+
+.footballTableFull {
+		width: 100%;
+		max-width: 650px;
+		background: white;
+
+}
+
+.allTableContainer {
+	display: block;
+	margin: auto;
+	padding: 2px;
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+	-ms-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+	-o-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	text-align: left;
+	background-color: white;
+
+}
+
+@media screen and (max-width: 500px) {
+
+	.allTableContainer {
+		position: relative;
+		display: none;
+		width: 100%;
+		height: 100%;
+		margin: 0px auto 50px auto;
+		padding: 0px 0px 96px 0px;
+		position: fixed;
+		overflow-y: scroll;
+		left: 0;
+		top: 45px;
+		opacity: 0.99;
+		z-index: 6;
+		text-align: left;
+	
+	}
+
+    .footballTableFull {
+		width: 100%;
+		text-align: left;
+		color: rgb(10, 10, 10);
+		display: block;
+	}
+	
+	.tableBottom {
+		box-shadow:inset 0px 1px 0px 0px #f9eca0;
+		background: linear-gradient(to bottom, #687e44 5%, rgb(87, 181, 59) 100%);
+		border-radius: 15px 15px 0 0;
+		display: inline-block;
+		cursor: pointer;
+		color :#ffffff;
+		font-family:Arial;
+		font-size: 15px;
+		font-weight: bold;
+		padding: 2px;
+		text-decoration: none;
+		text-shadow: 0px 1px 0px #3d768a;
+		width: 130px;
+		height: 35px;
+		line-height: 35px;
+		text-align: center;
+		margin: auto;
+		position: fixed;
+		bottom: 0;
+		left: calc(50% - 65px);
+		z-index: 8;
+	}
+}
+
+.legendContainer {
+	width: 100%;
+	margin: 0px 0px 25px 0px;
+}
+
+.legendContainer div {
+	line-height: 25px;
+	height: 25px;
+}
+
+    .legend_colors {
+        width: 20px;
+        height: 20px;
+        background-color: #1b7200;
+        display: inline-block;
+        border-radius: 6px;
+        vertical-align: middle;
+        padding: 2px !important;
+    }
+    
+    .legend_text {
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 2px !important;
+    
+    }
+    
+    .table_under_up_txt {
+        text-align: center;
+        font-size: 16px;
+		padding: 5px;
+    	margin-left: 0px !important;
+    }
+    
+    

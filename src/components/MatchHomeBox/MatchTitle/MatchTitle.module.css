@@ -1,0 +1,99 @@
+.mainTitle {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto 5px auto;
+    font-weight: 500;
+}
+
+.leftTeam {
+    width: calc(50% - 125px);
+    order: 0;
+    /*text-align: right;
+    padding-right: 10%;*/
+    font-size: 28px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.rightTeam {
+    width: calc(50% - 125px);
+    order: 2;
+    /*text-align: left;
+    padding-left: 10%;*/
+    font-size: 28px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.middleTitle {
+    width: 250px;
+    order: 1;
+    margin: 0px 10px 0px 10px;
+    text-align: left;
+    font-size: 16px;
+    line-height: 25px;
+
+}
+
+.line {
+    text-align: center;
+
+}
+
+.d {
+    font-size: 15px;
+}
+
+
+.middleTitle img {
+    width: 32px;
+    height: 32px;
+    margin-top: -13px;
+}
+
+.vs {
+    display: none;
+}
+
+
+
+@media (max-width: 500px){
+    .mainTitle {
+        flex-flow: column;
+        margin: 15px auto 30px auto;
+    }
+    
+    .leftTeam {
+        width: 100%;
+        order: 1;
+        text-align: center;
+        padding: 0px;
+        font-size: 22px;
+    }
+    
+    .rightTeam {
+        width: 100%;
+        order: 3;
+        text-align: center;
+        padding: 0px;    
+        font-size: 22px;
+    }
+    
+    .middleTitle {
+        width: 100%;
+        order: 0;
+        margin: 0px auto 20px auto;
+        text-align: center;
+
+    }
+
+    .vs {
+        order: 2;
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,29 @@
+.TipBlock {
+    box-sizing: border-box;
+    background: linear-gradient(140deg, #ECEAEA, #e0dddd);
+    min-width: 90px;
+    overflow: visible;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin: 5px;
+    border-radius: 3px;
+    font: 15px Georgia, serif;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 3px 12px;
+    border: 1px solid #0e3b0e;
+    box-shadow: 2px 2px 1px #C0C0C0;
+    position: relative;
+}
+
+.Active {
+    background: rgb(255, 165, 0);
+    color: #fff;
+}
+
+@media (max-width: 700px) {
+    .TipBlock {
+        font-size: 14px;
+    }
+}

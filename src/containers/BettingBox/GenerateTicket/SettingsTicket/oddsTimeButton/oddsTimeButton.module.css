@@ -1,0 +1,43 @@
+.container {
+    min-width: 50px;
+    max-width: 87px;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    color: black;
+    margin: 5px;
+    border-radius: 3px;
+    font: 16px Georgia,serif;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid #000000;
+    position: relative;
+    flex-grow: 1;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4);
+}
+
+.content {
+    width: 100%;
+}
+
+.Active {
+    background: orange;
+    color: #f2f2f2;
+}
+
+
+
+.final {
+    position: absolute;
+    top: 11px;
+    right: 0px;
+    width: 17px;
+    height: 17px;
+}
+
+.correct {
+    width: 100%;
+    height: 100%;
+}

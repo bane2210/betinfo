@@ -1,0 +1,43 @@
+.Header {
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    margin-top: 0px;
+    min-height: 124px;
+    display: flex;
+    align-items: center;
+}
+
+.headerMarketing {
+    /*width: calc(100% - 250px); */
+    flex: 70% 1;
+    display: inline-block;
+}
+
+
+@media screen and (min-width: 1100px){ 
+    .logoImg img {
+        width: 65%;
+    }
+}
+
+@media screen and (max-width: 500px){
+
+    .Header {
+        min-height: 1px;
+    }
+    .logoImg {
+    display: none;
+    }
+
+    .headerMarketing {
+        /*width: calc(100% - 250px); */
+        flex: none;
+        width: 100%;
+        margin: auto;
+    }
+
+
+}
+
+

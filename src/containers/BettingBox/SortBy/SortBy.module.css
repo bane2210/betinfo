@@ -1,0 +1,32 @@
+.element {
+    width: 90px;
+    margin-left: 2px;
+    min-width: 40px;
+    box-sizing: border-box;
+    padding: 3px 5px;
+    overflow: visible;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    border-radius: 3px;
+    font: 14px Georgia, serif;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    color: #232323;
+    
+}
+
+
+
+.Active {
+
+    background: #e0dfdf;
+    font-weight: 500;
+    box-sizing: border-box;
+    border: 1px solid #9b9696;
+
+}

@@ -1,0 +1,151 @@
+
+.StatsLine {
+    min-height: 30px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.gameList {
+    display: flex;
+    margin: 10px 0px 10px 0px;
+    flex-flow: row wrap;
+    width: 96%;
+    max-height: 110px;
+    overflow-y: scroll;
+    font-size: 13px;
+    padding: 3px;
+    border-radius: 5px;
+    color: rgb(10, 10, 10);
+    background-color: whitesmoke;
+    box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.4);
+}
+
+.a {
+    width: 100%;
+    max-height: 30px;
+    display: flex;
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 22px;
+    margin-bottom: 2px;
+    border-bottom: 1px dotted #e0dfdf;
+}
+
+
+
+.teamName {
+    width: calc(50% - 60px);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+}
+
+.date {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    font-size: 13px;
+    box-sizing: border-box;
+    padding-left: 3px;
+}
+
+
+
+.br{
+    width: 50px;
+    height: 100%;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.b {
+    font-weight: 600;
+}
+
+.txtContainer {
+    width: calc(100% - 110px);
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.txt {
+    width: 100%;
+    height: calc(100% - 3px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+
+}
+
+
+.bottomBorder {
+    width: 100%;
+    height: 2px;
+    background-color: #E0DFDF;
+    border-radius: 10px;
+}
+
+.bottomBorder span {
+ background-color: rgb(70,99,24, 0.8);
+ height: 100%;
+ display: block;
+}
+
+
+
+.List {
+    width: 60px;
+    height: 100%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+
+.W {
+    background-color: rgb(63,172,31, 0.7);
+}
+
+.D {
+    background-color: rgb(254,156,52, 0.7);
+}
+
+.L {
+    background-color: rgb(241,78,67, 0.7);
+}
+
+.s {
+    width: 70px;
+    height: 100%;
+    max-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 400;
+    font-size: 13px;
+    opacity: 0.88;
+    border-radius: 2px;
+    margin: 5px;
+    box-sizing: border-box;
+    color: whitesmoke;
+    padding: 0px 5px;
+}

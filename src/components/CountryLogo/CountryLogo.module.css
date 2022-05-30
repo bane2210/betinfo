@@ -1,0 +1,13 @@
+.flagImg{
+    width: 100%;
+    height: 100%;
+}
+
+.imgContainer{
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    margin: 0 15px 0 5px;
+    display: inline-block;
+    vertical-align: middle;
+}

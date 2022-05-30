@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+}
+
+.lastGamesBox {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 45px auto 20px auto;
+    border: 1px solid #e0dfdf;
+    padding: 1px 1px 10px 1px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+}
+
+.overallButtons {
+    width: 100%;
+    line-height: 30px;
+    order: 0;
+    margin: 5px auto 5px auto;
+}
+
+.W {
+    background-color: rgb(63,172,31, 0.7);
+}
+
+.D {
+    background-color: rgb(254,156,52, 0.7);
+}
+
+.L {
+    background-color: rgb(241,78,67, 0.7);
+}
+
+.s {
+    width: 70px;
+    height: 100%;
+    max-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 400;
+    font-size: 13px;
+    opacity: 0.88;
+    border-radius: 2px;
+    margin: 3px;
+    box-sizing: border-box;
+    color: whitesmoke;
+    padding: 0px 5px;
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 22px;
+    margin-bottom: 2px;
+    border-bottom: 1px dotted #e0dfdf;
+}
+
+.teamName {
+    width: calc(50% - 60px);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.date {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    font-size: 13px;
+    box-sizing: border-box;
+    padding-left: 3px;
+}
+
+.b {
+    font-weight: 500;
+}
+
+.nextPrevBox {
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.nextPrev {
+    width: 90px;
+    height: 100%;
+    line-height: 100%;
+    padding: 2px;
+    text-align: center;
+    margin: 0px 2px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+    .teamName {
+        font-size: 13px;
+    }
+
+    .s {
+        width: 65px;
+        font-size: 12px;
+    }
+}

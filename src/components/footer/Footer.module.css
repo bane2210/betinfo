@@ -1,0 +1,55 @@
+.footer{
+    padding: 0px;
+    text-align: center;
+    width: 100%;
+    background: #232323;
+    color: white;
+    min-height: 100px;
+    box-sizing: border-box;
+
+}
+
+.footerBox {
+    max-width: 1100px;
+    margin: auto;
+    padding: 5px;
+}
+
+.logoImg {
+    width: 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    
+}
+
+.payment{
+    max-width: 700px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.copyright {
+    width: calc(100% - 105px);
+    text-align: center;
+    display: inline-block;
+    padding: 10px 10px 10px 20px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 500px){
+    .payment{
+        flex-wrap: wrap;
+    }
+
+    .copyright {
+        width: calc(100% - 105px);
+        text-align: left;
+        padding: 10px 10px 10px 20px;
+        display: inline-block;
+    }
+}
+
+

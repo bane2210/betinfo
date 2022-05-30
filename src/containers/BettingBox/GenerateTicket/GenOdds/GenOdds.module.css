@@ -1,0 +1,57 @@
+.genOdds {
+    width: 150px;
+    text-align: center;
+    min-height: 50px;
+    padding: 5px;
+    color: orange;
+    font-weight: 700;
+    line-height: 30px;
+    display: flex;
+    flex-flow: column wrap;
+    cursor: pointer;
+
+}
+
+.topOdds {
+    width: 100%;
+    text-align: center;
+    height: 26px;
+    background: linear-gradient(180deg,#131413 0,#232323 0,#232323 136%);
+    color: orange;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.bottomOdds {
+    width: 92%;
+    margin: 0 auto;
+    text-align: center;
+    height: 20px;
+    border: 1px solid orange;
+    border-radius: 0px 0px 12px 12px;
+    color: orange;
+    font-weight: 400;
+    font-size: 13px;
+    display: flex;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.selectedOdd {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+@media (max-width: 500px) {
+
+    .genOdds {
+        width: 130px;
+    }
+
+}

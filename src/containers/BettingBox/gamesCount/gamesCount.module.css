@@ -1,0 +1,16 @@
+.gamesCount {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    padding: 0px;
+    height: 16px;
+    border-radius: 25px;
+    font: 11px -apple-system;
+    background-color: white;
+    color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border: 1px solid orange;
+}

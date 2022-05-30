@@ -1,0 +1,15 @@
+.checkAllButton {
+    background: orange;
+    color: #f2f2f2;
+    min-width: 110px;
+    padding: 1px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    border-radius: 3px;
+    font: 16px Georgia,serif;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #fffcfc;
+}

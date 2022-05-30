@@ -1,0 +1,60 @@
+.Sidebar{
+    min-height: 500px;
+    max-width: 300px;
+    flex: 30%;
+    /*background-color: #c5b1b1;
+    background: rgba(0,0,0,0.08);*/
+    padding: 0px;
+    margin-top: 0px;
+    overflow: auto;
+    box-sizing: border-box;
+    background: linear-gradient(to top, rgba(0,0,0,0.30) 0%,rgba(0,0,0,0.1) 109%);
+
+}
+
+.SidebarTop {
+    background-color: white;
+}
+
+.logoImg {
+    width: 100%;
+    display: flex;
+    margin: 0px auto;
+    padding: 7px;
+    background: #dddddd;
+
+}
+
+
+.logoImg img {
+    width: 80%;
+    margin: auto;
+}
+
+
+.markBox {
+    width: 100%;
+    
+
+}
+
+.livescore {
+    width: 94%;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+    margin: 7px auto;
+    background: linear-gradient(to top, rgba(0,0,0,0.60) 0%,rgba(0,0,0,0.3) 109%);
+    
+}
+
+
+@media screen and (max-width: 499px){
+    .Sidebar {
+        order: 1;
+        width: 100%;
+        max-width: 500px;
+}
+}

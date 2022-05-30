@@ -1,0 +1,26 @@
+.footerMarketing {
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.50) 0%,rgba(0,0,0,0) 109%);
+    color: white;
+    box-sizing: border-box;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+
+}
+
+
+
+.banerBox {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0px auto;
+    display: flex;
+    overflow: hidden;
+}
+
+.banerBox a, .banerBox div, .banerBox p {
+    display: inline-block;
+}

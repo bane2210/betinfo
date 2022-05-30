@@ -1,0 +1,89 @@
+.Container {
+    /*border-bottom: 1px solid wheat;*/
+    border-bottom: 1px solid #d3d3d3;
+    margin: 0px;
+    width: 100%;
+    min-height: 27px;
+    padding: 3px;
+    position: relative;
+    font-size: 14px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+
+  .Container .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 2px 0 2px 0;
+    font-size: 12px;
+    height: 16px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    left: 60px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+  
+  .Container:hover {
+    cursor: pointer;
+    background-color: #e9e9e9;
+  }
+  
+  .Container:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+  .Container .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 100%; /* To the right of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+  }
+
+.Date {
+    width: 40px;
+    display: inline-block;
+}
+
+.GameInfo{
+    width: calc(100% - 42px);
+    text-align: center;
+    display: flex;
+
+}
+
+.homeTeam, .awayTeam {
+  width: calc(50% - 20px);
+  text-align: center;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: auto;
+  font-weight: 400;
+}
+
+.vs {
+  width: 40px;
+  text-align: center;
+  display: inline-block;
+}
+
+@media (max-width: 500px){
+  .Container {
+    min-height: 30px;
+    font-size: 13px;
+  }
+}

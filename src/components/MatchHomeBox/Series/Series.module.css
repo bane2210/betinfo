@@ -1,0 +1,53 @@
+.SeriesBox {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.Series {
+    width: 80%;
+    margin: auto;
+    padding: 2px;
+    display: flex;
+}
+
+.noSeries {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.count {
+    width: 30px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    color: black;
+    font-weight: 600;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.txt {
+    width: calc(100% - 25px);
+    height: 100%;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.overallButtons {
+    width: 100%;
+    line-height: 30px;
+    order: 0;
+    margin: 5px auto 5px auto;
+}
+
+@media (max-width: 500px){
+    .Series {
+        width: 100%;
+    }
+}

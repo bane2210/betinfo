@@ -1,0 +1,12 @@
+.Aux{
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+
+}
+
+.mark {
+    max-width: 700px;
+    margin: 0px auto;
+    text-align: center;
+}
