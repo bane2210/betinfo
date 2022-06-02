@@ -9,20 +9,16 @@ import Header from "../../components/Header/Header";
 import LinksPage from "../../components/LinksPage/LinksPage";
 
 const ContentBox = (props) => {
+  console.log(props);
   return (
     <div className={classes.ContentBox}>
       <Header h={props.h} />
       <Routes>
-        <Route
-          path="/"
-          exact
-          render={(props) => <MainPage {...props} m={props.m} />}
-        />
-        <Route path="/subscription" exact component={SubscribePage} />
-        <Route path="/contact" exact component={ContactPage} />
+        <Route path="/" element={<MainPage {...props}/>} />
+        <Route path="/subscription" element={<SubscribePage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route
           path="/login"
-          exact
           render={() => (
             <div style={{ textAlign: "center" }}>
               {" "}
@@ -32,19 +28,20 @@ const ContentBox = (props) => {
         />
         <Route
           path="/livescore"
-          exact
-          render={(props) => <Livescore {...props} content="livescore" />}
+          render={(routeProps) => (
+            <Livescore routeProps={routeProps} content="livescore" />
+          )}
         />
         <Route
           path="/dropping-odds"
-          exact
-          render={(props) => <Livescore {...props} content="odds" />}
+          render={(routeProps) => (
+            <Livescore routeProps={routeProps} content="odds" />
+          )}
         />
         <Route
           path="/partner-links"
-          exact
-          render={(props) => (
-            <LinksPage {...props} pageLinks={props.pageLinks} />
+          render={(routeProps) => (
+            <LinksPage routeProps={routeProps} pageLinks={props.pageLinks} />
           )}
         />
       </Routes>
