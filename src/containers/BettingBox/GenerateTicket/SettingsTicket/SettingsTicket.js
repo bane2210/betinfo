@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classes from './SettingsTicket.module.css';
 
 import OddsTimeButton from './oddsTimeButton/oddsTimeButton';
@@ -6,17 +6,14 @@ import CompetitionsBox from './CompetitionsBox/CompetitionsBox';
 import MarketBox from './MarketBox/MarketBox';
 
 
-class SettingsTicket extends Component {
-
-    render() {
-
+const SettingsTicket = (props) => {
 
         let content;
         let settingsButtons = {};
         let header = "";
 
 
-        if (this.props.type === 1) {
+        if (props.type === 1) {
             let yesNo;
 
             header = <div className={classes.header}>{"Choose approximate odds"}</div>;
@@ -26,13 +23,13 @@ class SettingsTicket extends Component {
             content = settingsButtons.map((element, index) => {
                 yesNo = false;
 
-                if(this.props.value[0] === element) yesNo = true;
+                if(props.value[0] === element) yesNo = true;
 
-                return <OddsTimeButton key={index} yesNo={yesNo} name={element} oddsTimeClick={() => this.props.oddsTimeClick(element, 1)} type={1} />;
+                return <OddsTimeButton key={index} yesNo={yesNo} name={element} oddsTimeClick={() => props.oddsTimeClick(element, 1)} type={1} />;
             });
         }
 
-        if (this.props.type === 2) {
+        if (props.type === 2) {
             let yesNo;
 
             header = <div className={classes.header}>{"Choose kick-off time"}</div>;
@@ -42,32 +39,30 @@ class SettingsTicket extends Component {
             content = settingsButtons.map((element, index) => {
                 yesNo = false;
 
-                if(this.props.value[1] === element) yesNo = true;
+                if(props.value[1] === element) yesNo = true;
 
-                return <OddsTimeButton key={index} yesNo={yesNo} name={element} oddsTimeClick={() => this.props.oddsTimeClick(element, 2)} type={2} />;
+                return <OddsTimeButton key={index} yesNo={yesNo} name={element} oddsTimeClick={() => props.oddsTimeClick(element, 2)} type={2} />;
             });
 
         }
 
-        if (this.props.type === 3) {
+        if (props.type === 3) {
             header = <div className={classes.header}>{"Choose competitions"}</div>;
-            content = <CompetitionsBox save={this.props.saveCompetitions} settingsObjectValue = {this.props.competitionsTicket} />
+            content = <CompetitionsBox save={props.saveCompetitions} settingsObjectValue = {props.competitionsTicket} />
         }
 
-        if (this.props.type === 4) {
+        if (props.type === 4) {
             header = <div className={classes.header}>{"Choose Betting Markets"}</div>;
-            content = <MarketBox save={this.props.saveMarket} settingsObjectValue = {this.props.marketTicket} />
+            content = <MarketBox save={props.saveMarket} settingsObjectValue = {props.marketTicket} />
         }
 
 
         return (
-            <div className={classes.Settings} onClick={this.props.click}>
+            <div className={classes.Settings} onClick={props.click}>
                 {header}
                 {content}
             </div>
         );
-    }
-
 
 }
 

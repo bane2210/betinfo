@@ -1,15 +1,13 @@
-.pageCenter{
-    width: 100%;
-    margin: 48px auto 0px auto;
-    display: flex;
-    box-sizing: border-box;
-
+.pageCenter {
+  width: 100%;
+  margin: 45px auto 0px auto;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-@media screen and (max-width: 500px){
-    .pageCenter {
-flex-direction: column;
+@media screen and (max-width: 500px) {
+  .pageCenter {
+    flex-direction: column;
+  }
 }
-}
-
-

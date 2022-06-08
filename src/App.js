@@ -1,20 +1,12 @@
-import React, { Component } from 'react';
-import Body from './containers/Body/Body';
+import React from "react";
+import Body from "./containers/Body/Body";
 
-
-class App extends Component {
-
-  render() {
-
-
-    return (
-      <div>
+const App = () => {
+  return (
+    <div>
         <Body />
-      </div>
-    );
-  }
-
-}
-
+    </div>
+  );
+};
 
 export default App;

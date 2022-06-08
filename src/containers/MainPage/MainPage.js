@@ -7,8 +7,15 @@ import classes from "./MainPage.module.css";
 import BettingBox from "../BettingBox/BettingBox";
 import Aux from "../../components/AuxAux/AuxAux";
 import Marketing from "../../components/Marketing/Marketing";
+import { useDispatch, useSelector } from "react-redux";
+import { restoreDateAction } from "../../store/createSlice";
 
 const MainPage = (props) => {
+  const stateBase = useSelector((state) => {
+    return state.backdropReducer;
+  });
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     games: [],
     dateSet: "",
@@ -21,9 +28,14 @@ const MainPage = (props) => {
   useEffect(() => {
     if (state.dateSet !== "") {
       const url =
-        "/api_stats/load_betinfo_schedule.php?date=%27" +
-        state.dateSet +
-        "%27";
+        "/api_stats/load_betinfo_schedule.php?date=%27" + state.dateSet + "%27";
+
+      dispatch(
+        restoreDateAction({
+          date: state.dateSet,
+          position: state.positionButton
+        })
+      );
 
       Axios.get(url).then((response) => {
         setState((prevState) => {
@@ -41,37 +53,50 @@ const MainPage = (props) => {
   });
 
   useEffect(() => {
-        // 2020-03-09
-        if (state.firstTime) {
-          const todayDate = new Date();
-          const m = parseInt(todayDate.getMonth()) + 1;
-          const todayDay =
-            todayDate.getDate() < 10
-              ? "0" + todayDate.getDate()
-              : todayDate.getDate();
-          const todayMonth = m < 10 ? "0" + m : m;
-          const todayYear =
-            todayDate.getFullYear() < 10
-              ? "0" + todayDate.getFullYear()
-              : todayDate.getFullYear();
-    
-          const finalDate = todayYear + "-" + todayMonth + "-" + todayDay;
-    
-          const url =
-            "/api_stats/load_betinfo_schedule.php?date=%27" + finalDate + "%27";
-    
-          Axios.get(url).then((response) => {
-            setState({
-              games: response.data,
-              dateSet: "",
-              dateSetAllways: finalDate,
-              firstTime: false,
-              loadSpinner: false,
-            });
-          });
-        }
-  }, []);
+    // 2020-03-09
+    if (state.firstTime) {
+      let finalDate = "";
+      if (stateBase.restoreDate !== "") {
+        finalDate = stateBase.restoreDate;
+      } else {
+        const todayDate = new Date();
+        const m = parseInt(todayDate.getMonth()) + 1;
+        const todayDay =
+          todayDate.getDate() < 10
+            ? "0" + todayDate.getDate()
+            : todayDate.getDate();
+        const todayMonth = m < 10 ? "0" + m : m;
+        const todayYear =
+          todayDate.getFullYear() < 10
+            ? "0" + todayDate.getFullYear()
+            : todayDate.getFullYear();
 
+        finalDate = todayYear + "-" + todayMonth + "-" + todayDay;
+
+        dispatch(
+          restoreDateAction({
+            date: finalDate,
+            position: state.positionButton,
+          })
+        );
+      }
+
+      const url =
+        "/api_stats/load_betinfo_schedule.php?date=%27" + finalDate + "%27";
+
+      Axios.get(url).then((response) => {
+        setState({
+          games: response.data,
+          dateSet: "",
+          dateSetAllways: finalDate,
+          firstTime: false,
+          loadSpinner: false,
+          positionButton: stateBase.datePosition,
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const changeUrl = (finalDate, pos) => {
     if (finalDate !== state.firstTime) {
@@ -84,7 +109,7 @@ const MainPage = (props) => {
     }
   };
 
-  window.scrollTo(0, 0);
+  //window.scrollTo(0, 0);
 
   //let props = useParams();
 

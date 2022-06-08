@@ -9,7 +9,7 @@ import Header from "../../components/Header/Header";
 import LinksPage from "../../components/LinksPage/LinksPage";
 
 const ContentBox = (props) => {
-  console.log(props);
+
   return (
     <div className={classes.ContentBox}>
       <Header h={props.h} />

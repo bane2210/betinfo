@@ -11,17 +11,16 @@
 
 .gameList {
     display: flex;
-    margin: 10px 0px 10px 0px;
+    margin: 10px 0px;
     flex-flow: row wrap;
-    width: 96%;
-    max-height: 110px;
+    width: 98%;
+    max-height: 150px;
     overflow-y: scroll;
     font-size: 13px;
-    padding: 3px;
-    border-radius: 5px;
+    padding: 15px 1px;
+    border-bottom: 1px dotted gray;
     color: rgb(10, 10, 10);
     background-color: whitesmoke;
-    box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.4);
 }
 
 .a {

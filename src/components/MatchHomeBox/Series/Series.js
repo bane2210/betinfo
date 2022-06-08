@@ -1,30 +1,35 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import classes from './Series.module.css';
 import Title from '../TittleTemplateBox/TittleTemplateBox';
 import OverallButton from '../OverallButton/OverallButton';
 
-class Series extends Component {
-
-    state = {
+const Series = (props) => {
+    const [state, setState] = useState({
         single: false,
         all: true
-    }
+    });
 
-    setAll = () => {
-        this.setState({
-            all: true,
-            single: false
+    const setAll = () => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                all: true,
+                single: false
+            };
         });
     }
 
-    setSingle = () => {
-        this.setState({
-            all: false,
-            single: true
+    const setSingle = () => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                all: false,
+                single: true
+            };
         });
     }
 
-    compare = ( a, b ) => {
+    const compare = ( a, b ) => {
         if ( a.count > b.count ){
           return -1;
         }
@@ -34,15 +39,13 @@ class Series extends Component {
         return 0;
       }
 
-    render() {
-
         let arr = [];
         let ccc = true;
 
-        if (this.state.single) {
-            arr = this.props.single;
+        if (state.single) {
+            arr = props.single;
         } else {
-            arr = this.props.all;
+            arr = props.all;
         }
 
 
@@ -99,14 +102,14 @@ class Series extends Component {
             { count: arr.more_SHSER, content: <div key="more_SHSER" className={classes.Series}><div className={classes.count}>{arr.more_SHSER}</div><i style={{margin: "5px"}} className="fa fa-long-arrow-right" aria-hidden="true"></i><div className={classes.txt}>More goals in the second half</div></div> },
         ];
 
-        seriesOBJ.sort( this.compare );
+        seriesOBJ.sort( compare );
 
         return (
             <div className={classes.SeriesBox}>
                 <Title name="Series" />
                 <div className={classes.overallButtons}>
-                    <OverallButton o={this.state.all} click={this.setAll} name="All" />
-                    <OverallButton o={this.state.single} click={this.setSingle} name={this.props.home_away} />
+                    <OverallButton o={state.all} click={setAll} name="All" />
+                    <OverallButton o={state.single} click={setSingle} name={props.home_away} />
                 </div>
                 {seriesOBJ.map(element => {
                     if(element.count > 3 ) {ccc = false; return element.content; }
@@ -115,7 +118,6 @@ class Series extends Component {
                 {ccc? <div className={classes.noSeries}>No interesting series at this moment.</div> : null}
             </div>
         );
-    }
 }
 
 export default Series;

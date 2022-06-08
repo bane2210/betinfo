@@ -1,18 +1,9 @@
-import React, { Component } from 'react';
-import classes from './Footer.module.css';
-import Logo from '../Logo/Logo';
-import PaymentIcon from '../PaymentIcon/PaymentIcon';
+import React from "react";
+import classes from "./Footer.module.css";
+import Logo from "../Logo/Logo";
 
-import paypal from '../../assets/paymentIcons/payPal_icon.png';
-import skrill from '../../assets/paymentIcons/skrill_icon.png';
-import neteller from '../../assets/paymentIcons/neteller_icon.png';
-import western from '../../assets/paymentIcons/western_icon.png';
-
-class Footer extends Component {
-
-    render() {
-
-        /*
+const Footer = () => {
+  /*
         let c = document.createElement("script");
         c.type = "text/javascript"; c.async = !0; c.id = "CleverCoreLoader48866";  c.setAttribute("data-target",window.name); c.setAttribute("data-callback","put-your-callback-macro-here");
         c.src = "//scripts.cleverwebserver.com/9def35ba40ca680672185b7e6d96a6ae.js";
@@ -26,20 +17,19 @@ class Footer extends Component {
         a.parentNode.insertBefore(c, a);
         */
 
-        return (
-            <div id="footerID" className={classes.footer}>
-                <div className={classes.footerBox}>
-                    <div className={classes.logoImg}>
-                        <Logo />
-                    </div>
-                    <div className={classes.copyright}>
-                        Copyright © 2019-{new Date().getFullYear()} betinfo.cc <br />
-                    Privacy Policy & Cookie Disclaimer | Terms & Conditions, Disclaimer
-                </div>
-                </div>
-            </div>
-        );
-    }
-}
+  return (
+    <div id="footerID" className={classes.footer}>
+      <div className={classes.footerBox}>
+        <div className={classes.logoImg}>
+          <Logo />
+        </div>
+        <div className={classes.copyright}>
+          Copyright © 2019-{new Date().getFullYear()} betinfo.cc <br />
+          Privacy Policy & Cookie Disclaimer | Terms & Conditions, Disclaimer
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Footer;

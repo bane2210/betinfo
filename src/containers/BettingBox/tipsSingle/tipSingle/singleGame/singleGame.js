@@ -1,203 +1,220 @@
-import React, { Component } from 'react';
-import classes from './singleGame.module.css';
+import React, { useState, useEffect } from "react";
+import classes from "./singleGame.module.css";
+import wrong from "../../../../../assets/images/wrong.png";
+import correct from "../../../../../assets/images/correct_250.png";
+import Flag from "../../../../../components/CountryLogo/CountryLogo";
+import { useDispatch } from "react-redux";
+import { backdropAction } from "../../../../../store/createSlice";
+import ReactGA from "react-ga";
 
-import wrong from '../../../../../assets/images/wrong.png';
-import correct from '../../../../../assets/images/correct_250.png';
-import Flag from '../../../../../components/CountryLogo/CountryLogo';
+const SingleGame = (props) => {
+  const [state, setState] = useState({ open: false });
+  const dispatch = useDispatch();
 
-import { connect } from 'react-redux';
-import ReactGA from 'react-ga';
+  useEffect(() => {
+    if (state.open) {
+      setState({
+        ...state,
+        open: false,
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  const openBackdrop = (backdropOBJ) => {
+    ReactGA.event({
+      category: "Games",
+      action: "Clicked",
+      label: props.h + " vs " + props.a,
+    });
 
-class SingleGame extends Component {
+    const yPos = document.getElementById("body").getBoundingClientRect().top;
 
-    state = {
+    dispatch(
+      backdropAction({ backdropOBJ: backdropOBJ, yPos: yPos, backVis: 1 })
+    );
+
+    // props.backdropSet(backdropOBJ, yPos);
+    /*window.location.hash = "game";*/
+  };
+
+  const openClose = () => {
+    if (state.open) {
+      setState({
         open: false
+      });
+    } else {
+      setState({
+        open: true
+      });
     }
+  };
 
+  let element = props.element;
+  let content = "";
+  let final = "";
+  let style = "rgba(0,0,0,50%)";
+  let time = "";
+  let explanation = "";
+  let fullDetails = "";
 
-    openBackdrop(backdropOBJ) {
+  let result = "";
 
-        ReactGA.event({
-            category: "Games",
-            action: "Clicked",
-            label: this.props.h + " vs " + this.props.a,
-        });
+  const currentDay = new Date(element.colDate + "T" + element.colTime);
+  const hours =
+    currentDay.getHours() < 10
+      ? "0" + currentDay.getHours()
+      : currentDay.getHours();
+  const minutes =
+    currentDay.getMinutes() < 10
+      ? "0" + currentDay.getMinutes()
+      : currentDay.getMinutes();
 
-        const yPos = document.getElementById("body").getBoundingClientRect().top;
-        const back = document.getElementById("backdrop");
+  time = hours + ":" + minutes;
 
-        if (back !== null) back.style.display = "flex";
-        document.getElementById("body").style.display = "none";
-
-        this.props.backdropSet(backdropOBJ, yPos);
-        /*window.location.hash = "game";*/
-
-
+  if (parseInt(props.element.resultCount) !== -1) {
+    if (parseInt(props.element.resultCount) === 1) {
+      final = (
+        <div className={classes.final}>
+          <img className={classes.correct} src={correct} alt="correct" />
+        </div>
+      );
+      style = "green";
+      result = (
+        <div className={classes.countryComp + " " + classes.greenRes}>
+          {" "}
+          Result: {props.element.result}{" "}
+        </div>
+      );
+    } else if (parseInt(props.element.resultCount) === 0) {
+      final = (
+        <div className={classes.final}>
+          <img className={classes.wrong} src={wrong} alt="wrong" />
+        </div>
+      );
+      style = "#c10f0f";
+      result = (
+        <div className={classes.countryComp + " " + classes.redRes}>
+          {" "}
+          Result: {props.element.result}{" "}
+        </div>
+      );
     }
+  }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.element !== this.props.element) {
-            if (this.state.open) {
-                this.setState({
-                    open: false
-                })
-            }
-        }
-    }
+  if (state.open) {
+    const currentDay = new Date(element.colDate + "T" + element.colTime);
 
-    openClose = () => {
-        if (this.state.open) {
-            this.setState({
-                open: false
-            });
-        } else {
-            this.setState({
-                open: true
-            });
+    const hours =
+      currentDay.getHours() < 10
+        ? "0" + currentDay.getHours()
+        : currentDay.getHours();
+    const minutes =
+      currentDay.getMinutes() < 10
+        ? "0" + currentDay.getMinutes()
+        : currentDay.getMinutes();
 
-        }
-    }
+    let backdropOBJ = {
+      date: currentDay.toString(),
+      time: hours + ":" + minutes,
+      home: element.homeTeam,
+      away: element.awayTeam,
+      country: element.country,
+      competition: element.competition,
+      simpleDate: element.date,
+    };
 
-    render() {
+    fullDetails = (
+      <div
+        className={classes.FullDetails}
+        onClick={() => openBackdrop(backdropOBJ)}
+      >
+        Click for full details!
+      </div>
+    );
 
-        let element = this.props.element;
-        let content = "";
-        let final = "";
-        let style = "#c5c0c0";
-        let time = "";
-        let explanation = "";
-        let fullDetails = "";
-
-        let result = "";
-
-        const currentDay = new Date(element.colDate + "T" + element.colTime);
-        const hours = currentDay.getHours() < 10 ? '0' + currentDay.getHours() : currentDay.getHours();
-        const minutes = currentDay.getMinutes() < 10 ? '0' + currentDay.getMinutes() : currentDay.getMinutes();
-
-        time = hours + ":" + minutes
-
-
-
-
-        if (parseInt(this.props.element.resultCount) !== -1) {
-
-            if (parseInt(this.props.element.resultCount) === 1) {
-                final = <div className={classes.final}>
-                    <img className={classes.correct} src={correct} alt="correct" />
-                </div>;
-                style = "green";
-                result = <div className={classes.countryComp + " " + classes.greenRes} > Result: {this.props.element.result} </div>;
-            } else if (parseInt(this.props.element.resultCount) === 0) {
-                final = <div className={classes.final}>
-                    <img className={classes.wrong} src={wrong} alt="wrong" />
-                </div>
-                style = "#c10f0f";
-                result = <div className={classes.countryComp + " " + classes.redRes} > Result: {this.props.element.result} </div>;
-            }
-        }
-
-
-
-        if (this.state.open) {
-            /*
-            <MatchSingle
-                            key={index}
-                            t={hours + ":" + minutes}
-                            h={text.homeTeam}
-                            a={text.awayTeam}
-                            country={text.country}
-                            comp={text.competition}
-                            date={currentDay}
-                            simpleDate={simpleDate} />
-            */
-
-           const currentDay = new Date(element.colDate + "T" + element.colTime);
-
-           const hours = currentDay.getHours() < 10 ? '0' + currentDay.getHours() : currentDay.getHours();
-           const minutes = currentDay.getMinutes() < 10 ? '0' + currentDay.getMinutes() : currentDay.getMinutes();
-
-
-            let backdropOBJ = {
-                date: currentDay,
-                time: hours + ":" + minutes,
-                home: element.homeTeam,
-                away: element.awayTeam,
-                country: element.country,
-                competition: element.competition,
-                simpleDate: element.date
-            }
-
-            fullDetails = <div className={classes.FullDetails}
-                onClick={() => this.openBackdrop(backdropOBJ)}>
-                Click for full details!
-                </div>;
-
-
-            explanation = element.explanation.split("****").map((element, index) => {
-                if (element !== "") {
-                    return <div key={index} className={classes.explanationLine}>{element}</div>
-                } else return null;
-            });
-
-
-        }
-
-        content = <div key={this.props.index} className={classes.tipsLineContainer}>
-            <div className={classes.tipsLine} onClick={this.openClose} style={{ border: "1px solid " + style }}>
-                {final}
-                <div className={classes.tip}>
-                    <div className={classes.flagContainer}>
-                        <Flag co={element.country} />
-                    </div>
-                    <div className={classes.GamesLineTop}>
-                        <div className={classes.teamNames}>
-                            {element.homeTeam + " vs " + element.awayTeam}
-                        </div>
-                        <div className={classes.tipInner}>
-                            {element.tip}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={classes.GamesLine}>
-                    <div className={classes.chance}>
-                        <div className={classes.kickOfMob}>
-                            Kick-off: {time}
-                        </div>
-                       Chance: <span className={classes.chanceBr}> {element.chance > 94 ? 94 + "%" : element.chance + "%"} </span>
-                    </div>
-                    <div className={classes.GamesLineBottom}>
-                        <div className={classes.kickOf}>
-                            Kick-off: {time}
-                        </div>
-                        <div className={classes.countryComp}>
-                            {element.country + " - " + element.competition}
-                        </div>
-                        {result}
-                        <div className={classes.explanationTxt}><span style={{ marginRight: "5px" }}> Explanation </span> {this.state.open ? <i style={{ fontSize: "11px" }} className="fa fa-arrow-down" aria-hidden="true"></i> : <i style={{ fontSize: "11px" }} className="fa fa-arrow-right" aria-hidden="true"></i>}</div>
-                    </div>
-                </div>
-
-                <div className={classes.GamesLine}>
-                    {this.state.open ? <div className={classes.explanation}>{explanation}{fullDetails}</div> : ""}
-                </div>
-            </div>
-        </div>;
-
+    explanation = element.explanation.split("****").map((element, index) => {
+      if (element !== "") {
         return (
-            content
+          <div key={index} className={classes.explanationLine}>
+            {element}
+          </div>
         );
-    }
+      } else return null;
+    });
+  }
 
+  content = (
+    <div key={props.index} className={classes.tipsLineContainer}>
+      <div
+        className={classes.tipsLine}
+        onClick={openClose}
+        style={{ border: "1px solid " + style }}
+      >
+        {final}
+        <div className={classes.tip}>
+          <div className={classes.flagContainer}>
+            <Flag co={element.country} />
+          </div>
+          <div className={classes.GamesLineTop}>
+            <div className={classes.teamNames}>
+              {element.homeTeam + " vs " + element.awayTeam}
+            </div>
+            <div className={classes.tipInner}>{element.tip}</div>
+          </div>
+        </div>
 
-}
+        <div className={classes.GamesLine}>
+          <div className={classes.chance}>
+            <div className={classes.kickOfMob}>Kick-off: {time}</div>
+            Chance:{" "}
+            <span className={classes.chanceBr}>
+              {" "}
+              {element.chance > 94 ? 94 + "%" : element.chance + "%"}{" "}
+            </span>
+          </div>
+          <div className={classes.GamesLineBottom}>
+            <div className={classes.kickOf}>Kick-off: {time}</div>
+            <div className={classes.countryComp}>
+              {element.country + " - " + element.competition}
+            </div>
+            {result}
+            <div className={classes.explanationTxt}>
+              <span style={{ marginRight: "5px" }}> Explanation </span>{" "}
+              {state.open ? (
+                <i
+                  style={{ fontSize: "11px" }}
+                  className="fa fa-arrow-down"
+                  aria-hidden="true"
+                ></i>
+              ) : (
+                <i
+                  style={{ fontSize: "11px" }}
+                  className="fa fa-arrow-right"
+                  aria-hidden="true"
+                ></i>
+              )}
+            </div>
+          </div>
+        </div>
 
-const mapDispatchToProps = dispatch => {
-    return {
-        backdropSet: (backdropOBJ, yPos) => dispatch({ type: "backdropSet", data: backdropOBJ, yPos: yPos })
-    }
-}
+        <div className={classes.GamesLine}>
+          {state.open ? (
+            <div className={classes.explanation}>
+              {explanation}
+              {fullDetails}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+      <div className={classes.dottedLine} />
 
+    </div>
+  );
 
-export default connect(null, mapDispatchToProps)(SingleGame);
+  return content;
+};
+
+export default SingleGame;

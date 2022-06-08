@@ -1,43 +1,50 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect} from 'react';
 import classes from './SingleBettingBox.module.css';
 import OverallButton from '../../MatchHomeBox/OverallButton/OverallButton';
 import TipsLine from './tipsLine/tipsLine';
 import Title from '../../MatchHomeBox/TittleTemplateBox/TittleTemplateBox';
 
-class SingleBettingBox extends Component {
-
-    state = {
+const SingleBettingBox = (props) => {
+    const [state, setState] = useState({
         recomended: true,
         couldTry: false,
         recomendedObj: [],
         couldTryObj: []
-    }
+    });
 
-    componentDidMount() {
-        this.calcBettingTips();
-    }
+    useEffect(() => {
+        calcBettingTips();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    setRecomended = () => {
-        this.setState({
-            recomended: true,
-            couldTry: false
+
+    const setRecomended = () => {
+        setState(() => {
+            return {
+                ...state,
+                recomended: true,
+                couldTry: false,
+            };
         });
     }
 
-    setCouldTry = () => {
-        this.setState({
-            recomended: false,
-            couldTry: true
+    const setCouldTry = () => {
+        setState(() => {
+            return {
+                ...state,
+                recomended: false,
+                couldTry: true
+            };
         });
     }
 
 
-    calcChance = (home, away, br) => {
+    const calcChance = (home, away, br) => {
 
-        const h1_count = this.props.homeOBJHome.gamesCount;
-        const h2_count = this.props.homeOBJAll.gamesCount;
-        const a1_count = this.props.awayOBJAway.gamesCount;
-        const a2_count = this.props.awayOBJAll.gamesCount;
+        const h1_count = props.homeOBJHome.gamesCount;
+        const h2_count = props.homeOBJAll.gamesCount;
+        const a1_count = props.awayOBJAway.gamesCount;
+        const a2_count = props.awayOBJAll.gamesCount;
 
 
         if (h1_count > 3 && a1_count > 3) {
@@ -45,10 +52,10 @@ class SingleBettingBox extends Component {
             let homeChance = 0;
             let awayChance = 0;
 
-            const homeOBJHome = this.props.homeOBJHome;
-            const homeOBJAll = this.props.homeOBJAll;
-            const awayOBJAway = this.props.awayOBJAway;
-            const awayOBJAll = this.props.awayOBJAll;
+            const homeOBJHome = props.homeOBJHome;
+            const homeOBJAll = props.homeOBJAll;
+            const awayOBJAway = props.awayOBJAway;
+            const awayOBJAll = props.awayOBJAll;
 
 
 
@@ -101,14 +108,14 @@ class SingleBettingBox extends Component {
 
 
             if (home === "gibh") {
-                let a_h1_perc = this.calcChance("over_0_5_HT", "over_0_5_HT", 82);
-                let a_a1_perc = this.calcChance("over_0_5_SH", "over_0_5_SH", 84);
+                let a_h1_perc = calcChance("over_0_5_HT", "over_0_5_HT", 82);
+                let a_a1_perc = calcChance("over_0_5_SH", "over_0_5_SH", 84);
                 if (a_h1_perc.total > 82 || a_a1_perc.total > 84) {
                     totalChance += parseInt((((a_h1_perc.total + a_a1_perc.total) / 2 - totalChance) / 4).toFixed(0));
                 }
             } else if (home === "bts") {
-                let a_h1_perc = this.calcChance("soem", "cc_0_5", 85);
-                let a_a1_perc = this.calcChance("cc_0_5", "soem", 85);
+                let a_h1_perc = calcChance("soem", "cc_0_5", 85);
+                let a_a1_perc = calcChance("cc_0_5", "soem", 85);
 
                 if (a_h1_perc.total > 85 || a_a1_perc.total > 85) {
                     totalChance += parseInt((((a_h1_perc.total + a_a1_perc.total) / 2 - totalChance) / 4).toFixed(0));
@@ -139,7 +146,7 @@ class SingleBettingBox extends Component {
         }
     }
 
-    calcBettingTips = () => {
+    const calcBettingTips = () => {
 
         let recomendedObj = [];
         let couldTryObj = [];
@@ -148,14 +155,14 @@ class SingleBettingBox extends Component {
         let chance = {};
         let final = null;
 
-        const homeTeam = this.props.homeOBJHome.teamName;
-        const awayTeam = this.props.awayOBJAway.teamName;
-        const final_result = this.props.final_results;
+        const homeTeam = props.homeOBJHome.teamName;
+        const awayTeam = props.awayOBJAway.teamName;
+        const final_result = props.final_results;
 
 
 
         // home team win
-        chance = this.calcChance("win", "lose", 65);
+        chance = calcChance("win", "lose", 65);
         if (chance.total >= 65) {
             explanation = [];
 
@@ -166,12 +173,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.winSER > 2) {
-                explanation.push(homeTeam + " won the last " + this.props.homeOBJHome.winSER + " of their home games");
+            if (props.homeOBJHome.winSER > 2) {
+                explanation.push(homeTeam + " won the last " + props.homeOBJHome.winSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.winSER > 2) {
-                explanation.push(homeTeam + " won the last " + this.props.homeOBJAll.winSER + " of all the games");
+            if (props.homeOBJAll.winSER > 2) {
+                explanation.push(homeTeam + " won the last " + props.homeOBJAll.winSER + " of all the games");
             }
 
             explanation.push(awayTeam + " lost " + chance.a1_perc + "% of their away games");
@@ -179,12 +186,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.loseSER > 2) {
-                explanation.push(awayTeam + " lost the last " + this.props.awayOBJAway.loseSER + " of their away games");
+            if (props.awayOBJAway.loseSER > 2) {
+                explanation.push(awayTeam + " lost the last " + props.awayOBJAway.loseSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.loseSER > 2) {
-                explanation.push(awayTeam + " lost the last " + this.props.awayOBJAll.loseSER + " of all the games");
+            if (props.awayOBJAll.loseSER > 2) {
+                explanation.push(awayTeam + " lost the last " + props.awayOBJAll.loseSER + " of all the games");
             }
 
             final = null;
@@ -203,7 +210,7 @@ class SingleBettingBox extends Component {
 
 
         // draw
-        chance = this.calcChance("draw", "draw", 45);
+        chance = calcChance("draw", "draw", 45);
         if (chance.total >= 45) {
             explanation.length = 0;
 
@@ -214,12 +221,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.h2_perc + "% of all " + homeTeam + " games ended without winner");
             }
 
-            if (this.props.homeOBJHome.drawSER > 2) {
-                explanation.push(homeTeam + " played without winner in " + this.props.homeOBJHome.drawSER + " of its last home games");
+            if (props.homeOBJHome.drawSER > 2) {
+                explanation.push(homeTeam + " played without winner in " + props.homeOBJHome.drawSER + " of its last home games");
             }
 
-            if (this.props.homeOBJAll.drawSER > 2) {
-                explanation.push(homeTeam + " played without winner in the last " + this.props.homeOBJAll.drawSER + " games");
+            if (props.homeOBJAll.drawSER > 2) {
+                explanation.push(homeTeam + " played without winner in the last " + props.homeOBJAll.drawSER + " games");
             }
 
 
@@ -228,12 +235,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.a2_perc + "% of all " + awayTeam + " games ended without winner");
             }
 
-            if (this.props.awayOBJAway.drawSER > 2) {
-                explanation.push(awayTeam + " played without winner in " + this.props.awayOBJAway.drawSER + " of its last away games");
+            if (props.awayOBJAway.drawSER > 2) {
+                explanation.push(awayTeam + " played without winner in " + props.awayOBJAway.drawSER + " of its last away games");
             }
 
-            if (this.props.awayOBJAll.drawSER > 2) {
-                explanation.push(awayTeam + " played without winner in the last " + this.props.awayOBJAll.drawSER + " games");
+            if (props.awayOBJAll.drawSER > 2) {
+                explanation.push(awayTeam + " played without winner in the last " + props.awayOBJAll.drawSER + " games");
             }
 
             final = null;
@@ -258,12 +265,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.h2_perc + "% of all " + homeTeam + " games ended without winner");
             }
 
-            if (this.props.homeOBJHome.drawSER > 2) {
-                explanation.push(homeTeam + " played without winner in " + this.props.homeOBJHome.drawSER + " of its last home games");
+            if (props.homeOBJHome.drawSER > 2) {
+                explanation.push(homeTeam + " played without winner in " + props.homeOBJHome.drawSER + " of its last home games");
             }
 
-            if (this.props.homeOBJAll.drawSER > 2) {
-                explanation.push(homeTeam + " played without winner in the last " + this.props.homeOBJAll.drawSER + " games");
+            if (props.homeOBJAll.drawSER > 2) {
+                explanation.push(homeTeam + " played without winner in the last " + props.homeOBJAll.drawSER + " games");
             }
 
 
@@ -272,12 +279,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.a2_perc + "% of all " + awayTeam + " games ended without winner");
             }
 
-            if (this.props.awayOBJAway.drawSER > 2) {
-                explanation.push(awayTeam + " played without winner in " + this.props.awayOBJAway.drawSER + " of its last away games");
+            if (props.awayOBJAway.drawSER > 2) {
+                explanation.push(awayTeam + " played without winner in " + props.awayOBJAway.drawSER + " of its last away games");
             }
 
-            if (this.props.awayOBJAll.drawSER > 2) {
-                explanation.push(awayTeam + " played without winner in the last " + this.props.awayOBJAll.drawSER + " games");
+            if (props.awayOBJAll.drawSER > 2) {
+                explanation.push(awayTeam + " played without winner in the last " + props.awayOBJAll.drawSER + " games");
             }
 
             final = null;
@@ -296,7 +303,7 @@ class SingleBettingBox extends Component {
 
 
         // Away team win
-        chance = this.calcChance("lose", "win", 65);
+        chance = calcChance("lose", "win", 65);
         if (chance.total >= 65) {
             explanation.length = 0;
 
@@ -307,12 +314,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.loseSER > 2) {
-                explanation.push(homeTeam + " lost the last " + this.props.homeOBJHome.loseSER + " of their home games");
+            if (props.homeOBJHome.loseSER > 2) {
+                explanation.push(homeTeam + " lost the last " + props.homeOBJHome.loseSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.loseSER > 2) {
-                explanation.push(homeTeam + " lost the last " + this.props.homeOBJAll.loseSER + " of all the games");
+            if (props.homeOBJAll.loseSER > 2) {
+                explanation.push(homeTeam + " lost the last " + props.homeOBJAll.loseSER + " of all the games");
             }
 
 
@@ -322,12 +329,12 @@ class SingleBettingBox extends Component {
             }
 
 
-            if (this.props.awayOBJAway.winSER > 2) {
-                explanation.push(awayTeam + " won the last " + this.props.awayOBJAway.winSER + " of their away games");
+            if (props.awayOBJAway.winSER > 2) {
+                explanation.push(awayTeam + " won the last " + props.awayOBJAway.winSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.winSER > 2) {
-                explanation.push(awayTeam + " won the last " + this.props.awayOBJAll.winSER + " of all the games");
+            if (props.awayOBJAll.winSER > 2) {
+                explanation.push(awayTeam + " won the last " + props.awayOBJAll.winSER + " of all the games");
             }
 
             final = null;
@@ -346,7 +353,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team To Score
-        chance = this.calcChance("soem", "cc_0_5", 85);
+        chance = calcChance("soem", "cc_0_5", 85);
         if (chance.total >= 85) {
             explanation.length = 0;
 
@@ -357,12 +364,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.soemSER > 2) {
-                explanation.push(homeTeam + " scored in the last " + this.props.homeOBJHome.soemSER + " of their home games");
+            if (props.homeOBJHome.soemSER > 2) {
+                explanation.push(homeTeam + " scored in the last " + props.homeOBJHome.soemSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.soemSER > 2) {
-                explanation.push(homeTeam + " scored in the last " + this.props.homeOBJAll.soemSER + " of all the games");
+            if (props.homeOBJAll.soemSER > 2) {
+                explanation.push(homeTeam + " scored in the last " + props.homeOBJAll.soemSER + " of all the games");
             }
 
             explanation.push(awayTeam + " conceded over 0.5 goals in " + chance.a1_perc + "% of their away games");
@@ -370,12 +377,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded over 0.5 goals in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.cc_0_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the last " + this.props.awayOBJAway.cc_0_5SER + " of their away games");
+            if (props.awayOBJAway.cc_0_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the last " + props.awayOBJAway.cc_0_5SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_0_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the last " + this.props.awayOBJAll.cc_0_5SER + " of all the games");
+            if (props.awayOBJAll.cc_0_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the last " + props.awayOBJAll.cc_0_5SER + " of all the games");
             }
 
             final = null;
@@ -394,7 +401,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team To Score
-        chance = this.calcChance("cc_0_5", "soem", 85);
+        chance = calcChance("cc_0_5", "soem", 85);
         if (chance.total >= 85) {
             explanation.length = 0;
 
@@ -405,12 +412,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded over 0.5 goals in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_0_5SER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the last " + this.props.homeOBJHome.cc_0_5SER + " of their home games");
+            if (props.homeOBJHome.cc_0_5SER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the last " + props.homeOBJHome.cc_0_5SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_0_5SER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the last " + this.props.homeOBJAll.cc_0_5SER + " of all the games");
+            if (props.homeOBJAll.cc_0_5SER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the last " + props.homeOBJAll.cc_0_5SER + " of all the games");
             }
 
             explanation.push(awayTeam + " scored in " + chance.a1_perc + "% of their away games");
@@ -418,12 +425,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.soemSER > 2) {
-                explanation.push(awayTeam + " scored in the last " + this.props.awayOBJAway.soemSER + " of their away games");
+            if (props.awayOBJAway.soemSER > 2) {
+                explanation.push(awayTeam + " scored in the last " + props.awayOBJAway.soemSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.soemSER > 2) {
-                explanation.push(awayTeam + " scored in the last " + this.props.awayOBJAll.soemSER + " games");
+            if (props.awayOBJAll.soemSER > 2) {
+                explanation.push(awayTeam + " scored in the last " + props.awayOBJAll.soemSER + " games");
             }
 
             final = null;
@@ -442,7 +449,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team To Score Twice
-        chance = this.calcChance("stgoem", "cc_1_5", 70);
+        chance = calcChance("stgoem", "cc_1_5", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -453,12 +460,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored twice in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.stgoemSER > 2) {
-                explanation.push(homeTeam + "  scored twice in the last " + this.props.homeOBJHome.stgoemSER + " of their home games");
+            if (props.homeOBJHome.stgoemSER > 2) {
+                explanation.push(homeTeam + "  scored twice in the last " + props.homeOBJHome.stgoemSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.stgoemSER > 2) {
-                explanation.push(homeTeam + "  scored twice in the last " + this.props.homeOBJAll.stgoemSER + " games");
+            if (props.homeOBJAll.stgoemSER > 2) {
+                explanation.push(homeTeam + "  scored twice in the last " + props.homeOBJAll.stgoemSER + " games");
             }
 
             explanation.push(awayTeam + " conceded over 1.5 goals in " + chance.a1_perc + "% of their away games");
@@ -466,12 +473,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded over 1.5 goals in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.cc_1_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + this.props.awayOBJAway.cc_1_5SER + " of their away games");
+            if (props.awayOBJAway.cc_1_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + props.awayOBJAway.cc_1_5SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_1_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + this.props.awayOBJAll.cc_1_5SER + " of all the games");
+            if (props.awayOBJAll.cc_1_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + props.awayOBJAll.cc_1_5SER + " of all the games");
             }
 
 
@@ -497,12 +504,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored twice in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.stgoemSER > 2) {
-                explanation.push(homeTeam + "  scored twice in the last " + this.props.homeOBJHome.stgoemSER + " of their home games");
+            if (props.homeOBJHome.stgoemSER > 2) {
+                explanation.push(homeTeam + "  scored twice in the last " + props.homeOBJHome.stgoemSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.stgoemSER > 2) {
-                explanation.push(homeTeam + "  scored twice in the last " + this.props.homeOBJAll.stgoemSER + " games");
+            if (props.homeOBJAll.stgoemSER > 2) {
+                explanation.push(homeTeam + "  scored twice in the last " + props.homeOBJAll.stgoemSER + " games");
             }
 
             explanation.push(awayTeam + " conceded over 1.5 goals in " + chance.a1_perc + "% of their away games");
@@ -510,12 +517,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded over 1.5 goals in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.cc_1_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + this.props.awayOBJAway.cc_1_5SER + " of their away games");
+            if (props.awayOBJAway.cc_1_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + props.awayOBJAway.cc_1_5SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_1_5SER > 2) {
-                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + this.props.awayOBJAll.cc_1_5SER + " of all the games");
+            if (props.awayOBJAll.cc_1_5SER > 2) {
+                explanation.push(awayTeam + " conceded over 1.5 goals in the last " + props.awayOBJAll.cc_1_5SER + " of all the games");
             }
 
 
@@ -534,7 +541,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team To Score Twice
-        chance = this.calcChance("cc_1_5", "stgoem", 70);
+        chance = calcChance("cc_1_5", "stgoem", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -545,12 +552,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded over 1.5 goals in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_1_5 > 2) {
-                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + this.props.homeOBJHome.cc_1_5 + " of their home games");
+            if (props.homeOBJHome.cc_1_5 > 2) {
+                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + props.homeOBJHome.cc_1_5 + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_1_5 > 2) {
-                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + this.props.homeOBJAll.cc_1_5 + " games");
+            if (props.homeOBJAll.cc_1_5 > 2) {
+                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + props.homeOBJAll.cc_1_5 + " games");
             }
 
             explanation.push(awayTeam + " scored twice in " + chance.a1_perc + "% of their away games");
@@ -558,12 +565,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored twice in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.stgoemSER > 2) {
-                explanation.push(awayTeam + " scored twice in the last " + this.props.awayOBJAway.stgoemSER + " of their away games");
+            if (props.awayOBJAway.stgoemSER > 2) {
+                explanation.push(awayTeam + " scored twice in the last " + props.awayOBJAway.stgoemSER + " of their away games");
             }
 
-            if (this.props.awayOBJAway.stgoemSER > 2) {
-                explanation.push(awayTeam + " scored twice in the last " + this.props.awayOBJAway.stgoemSER + " games");
+            if (props.awayOBJAway.stgoemSER > 2) {
+                explanation.push(awayTeam + " scored twice in the last " + props.awayOBJAway.stgoemSER + " games");
             }
 
             final = null;
@@ -588,12 +595,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded over 1.5 goals in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_1_5 > 2) {
-                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + this.props.homeOBJHome.cc_1_5 + " of their home games");
+            if (props.homeOBJHome.cc_1_5 > 2) {
+                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + props.homeOBJHome.cc_1_5 + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_1_5 > 2) {
-                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + this.props.homeOBJAll.cc_1_5 + " games");
+            if (props.homeOBJAll.cc_1_5 > 2) {
+                explanation.push(homeTeam + " conceded over 1.5 goals in the last " + props.homeOBJAll.cc_1_5 + " games");
             }
 
             explanation.push(awayTeam + " scored twice in " + chance.a1_perc + "% of their away games");
@@ -601,12 +608,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored twice in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.stgoemSER > 2) {
-                explanation.push(awayTeam + " scored twice in the last " + this.props.awayOBJAway.stgoemSER + " of their home games");
+            if (props.awayOBJAway.stgoemSER > 2) {
+                explanation.push(awayTeam + " scored twice in the last " + props.awayOBJAway.stgoemSER + " of their home games");
             }
 
-            if (this.props.awayOBJAway.stgoemSER > 2) {
-                explanation.push(awayTeam + " scored twice in the last " + this.props.awayOBJAway.stgoemSER + " games");
+            if (props.awayOBJAway.stgoemSER > 2) {
+                explanation.push(awayTeam + " scored twice in the last " + props.awayOBJAway.stgoemSER + " games");
             }
 
             final = null;
@@ -624,7 +631,7 @@ class SingleBettingBox extends Component {
 
 
         // home team win and over 1.5 goals
-        chance = this.calcChance("win2", "lose2", 60);
+        chance = calcChance("win2", "lose2", 60);
         if (chance.total >= 60) {
             explanation = [];
 
@@ -635,12 +642,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won and goals count was over 1.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.win2SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 1.5 in the last " + this.props.homeOBJHome.win2SER + " of their home games");
+            if (props.homeOBJHome.win2SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 1.5 in the last " + props.homeOBJHome.win2SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.win2SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 1.5 in the last " + this.props.homeOBJAll.win2SER + " games");
+            if (props.homeOBJAll.win2SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 1.5 in the last " + props.homeOBJAll.win2SER + " games");
             }
 
             explanation.push(awayTeam + " lost and goals count was over 1.5 in " + chance.a1_perc + "% of their away games");
@@ -648,12 +655,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost and goals count was over 1.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.lose2SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 1.5 in the last " + this.props.awayOBJAway.lose2SER + " of their away games");
+            if (props.awayOBJAway.lose2SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 1.5 in the last " + props.awayOBJAway.lose2SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.lose2SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 1.5 in the last " + this.props.awayOBJAll.lose2SER + " games");
+            if (props.awayOBJAll.lose2SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 1.5 in the last " + props.awayOBJAll.lose2SER + " games");
             }
 
             final = null;
@@ -672,7 +679,7 @@ class SingleBettingBox extends Component {
 
 
         // draw and over 1.5
-        chance = this.calcChance("draw2", "draw2", 40);
+        chance = calcChance("draw2", "draw2", 40);
         if (chance.total >= 40) {
             explanation.length = 0;
 
@@ -683,12 +690,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.h2_perc + "% of all " + homeTeam + " games ended without winner and goals count was over 1.5");
             }
 
-            if (this.props.homeOBJHome.draw2SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 1.5 in last " + this.props.homeOBJHome.draw2SER + " home games");
+            if (props.homeOBJHome.draw2SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 1.5 in last " + props.homeOBJHome.draw2SER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw2SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 1.5 in the last " + this.props.homeOBJAll.draw2SER + " games");
+            if (props.homeOBJAll.draw2SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 1.5 in the last " + props.homeOBJAll.draw2SER + " games");
             }
 
 
@@ -697,12 +704,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.a2_perc + "% of all " + awayTeam + " games ended without winner and goals count was over 1.5");
             }
 
-            if (this.props.awayOBJAway.draw2SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 1.5 in last " + this.props.awayOBJAway.draw2SER + " away games");
+            if (props.awayOBJAway.draw2SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 1.5 in last " + props.awayOBJAway.draw2SER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw2SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 1.5 in the last " + this.props.awayOBJAll.draw2SER + " games");
+            if (props.awayOBJAll.draw2SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 1.5 in the last " + props.awayOBJAll.draw2SER + " games");
             }
 
             final = null;
@@ -721,7 +728,7 @@ class SingleBettingBox extends Component {
 
 
         // Away team win and over 1.5 goals
-        chance = this.calcChance("lose2", "win2", 60);
+        chance = calcChance("lose2", "win2", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -732,12 +739,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost and goals count was over 1.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.lose2SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 1.5 in the last " + this.props.homeOBJHome.lose2SER + " of their home games");
+            if (props.homeOBJHome.lose2SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 1.5 in the last " + props.homeOBJHome.lose2SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.lose2SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 1.5 in the last " + this.props.homeOBJAll.lose2SER + " games");
+            if (props.homeOBJAll.lose2SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 1.5 in the last " + props.homeOBJAll.lose2SER + " games");
             }
 
 
@@ -746,12 +753,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won and goals count was over 1.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.win2SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 1.5 in the last " + this.props.awayOBJAway.win2SER + " of their away games");
+            if (props.awayOBJAway.win2SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 1.5 in the last " + props.awayOBJAway.win2SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.win2SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 1.5 in the last " + this.props.awayOBJAll.win2SER + " games");
+            if (props.awayOBJAll.win2SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 1.5 in the last " + props.awayOBJAll.win2SER + " games");
             }
 
             final = null;
@@ -770,7 +777,7 @@ class SingleBettingBox extends Component {
 
 
         // home team win and over 2.5 goals
-        chance = this.calcChance("win3", "lose3", 60);
+        chance = calcChance("win3", "lose3", 60);
         if (chance.total >= 60) {
             explanation = [];
 
@@ -781,12 +788,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won and goals count was over 2.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.win3SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + this.props.homeOBJHome.win3SER + " of their home games");
+            if (props.homeOBJHome.win3SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + props.homeOBJHome.win3SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.win3SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + this.props.homeOBJAll.win3SER + " of all the games");
+            if (props.homeOBJAll.win3SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + props.homeOBJAll.win3SER + " of all the games");
             }
 
             explanation.push(awayTeam + " lost and goals count was over 2.5 in " + chance.a1_perc + "% of their away games");
@@ -794,12 +801,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost and goals count was over 2.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.lose3SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + this.props.awayOBJAway.lose3SER + " of their away games");
+            if (props.awayOBJAway.lose3SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + props.awayOBJAway.lose3SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.lose3SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + this.props.awayOBJAll.lose3SER + " of all the games");
+            if (props.awayOBJAll.lose3SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + props.awayOBJAll.lose3SER + " of all the games");
             }
 
             final = null;
@@ -824,12 +831,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won and goals count was over 2.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.win3SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + this.props.homeOBJHome.win3SER + " of their home games");
+            if (props.homeOBJHome.win3SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + props.homeOBJHome.win3SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.win3SER > 2) {
-                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + this.props.homeOBJAll.win3SER + " of all the games");
+            if (props.homeOBJAll.win3SER > 2) {
+                explanation.push(homeTeam + " won and goals count was over 2.5 in the last " + props.homeOBJAll.win3SER + " of all the games");
             }
 
             explanation.push(awayTeam + " lost and goals count was over 2.5 in " + chance.a1_perc + "% of their away games");
@@ -837,12 +844,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost and goals count was over 2.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.lose3SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + this.props.awayOBJAway.lose3SER + " of their away games");
+            if (props.awayOBJAway.lose3SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + props.awayOBJAway.lose3SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.lose3SER > 2) {
-                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + this.props.awayOBJAll.lose3SER + " of all the games");
+            if (props.awayOBJAll.lose3SER > 2) {
+                explanation.push(awayTeam + " lost and goals count was over 2.5 in the last " + props.awayOBJAll.lose3SER + " of all the games");
             }
 
             final = null;
@@ -860,7 +867,7 @@ class SingleBettingBox extends Component {
 
 
         // draw and over 2.5
-        chance = this.calcChance("draw3", "draw3", 30);
+        chance = calcChance("draw3", "draw3", 30);
         if (chance.total >= 30) {
             explanation.length = 0;
 
@@ -871,12 +878,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.h2_perc + "% of all " + homeTeam + " games ended without winner and goals count was over 2.5");
             }
 
-            if (this.props.homeOBJHome.draw3SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in " + this.props.homeOBJHome.draw3SER + " of its last home games");
+            if (props.homeOBJHome.draw3SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in " + props.homeOBJHome.draw3SER + " of its last home games");
             }
 
-            if (this.props.homeOBJAll.draw3SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in the last " + this.props.homeOBJAll.draw3SER + " games");
+            if (props.homeOBJAll.draw3SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in the last " + props.homeOBJAll.draw3SER + " games");
             }
 
 
@@ -885,12 +892,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.a2_perc + "% of all " + awayTeam + " games ended without winner and goals count was over 2.5");
             }
 
-            if (this.props.awayOBJAway.draw3SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in " + this.props.awayOBJAway.draw3SER + " of its last away games");
+            if (props.awayOBJAway.draw3SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in " + props.awayOBJAway.draw3SER + " of its last away games");
             }
 
-            if (this.props.awayOBJAll.draw3SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in the last " + this.props.awayOBJAll.draw3SER + " games");
+            if (props.awayOBJAll.draw3SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in the last " + props.awayOBJAll.draw3SER + " games");
             }
 
             final = null;
@@ -915,12 +922,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.h2_perc + "% of all " + homeTeam + " games ended without winner and goals count was over 2.5");
             }
 
-            if (this.props.homeOBJHome.draw3SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in " + this.props.homeOBJHome.draw3SER + " of its last home games");
+            if (props.homeOBJHome.draw3SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in " + props.homeOBJHome.draw3SER + " of its last home games");
             }
 
-            if (this.props.homeOBJAll.draw3SER > 2) {
-                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in the last " + this.props.homeOBJAll.draw3SER + " games");
+            if (props.homeOBJAll.draw3SER > 2) {
+                explanation.push(homeTeam + " played without winner and goals count was over 2.5 in the last " + props.homeOBJAll.draw3SER + " games");
             }
 
 
@@ -929,12 +936,12 @@ class SingleBettingBox extends Component {
                 explanation.push(chance.a2_perc + "% of all " + awayTeam + " games ended without winner and goals count was over 2.5");
             }
 
-            if (this.props.awayOBJAway.draw3SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in " + this.props.awayOBJAway.draw3SER + " of its last away games");
+            if (props.awayOBJAway.draw3SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in " + props.awayOBJAway.draw3SER + " of its last away games");
             }
 
-            if (this.props.awayOBJAll.draw3SER > 2) {
-                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in the last " + this.props.awayOBJAll.draw3SER + " games");
+            if (props.awayOBJAll.draw3SER > 2) {
+                explanation.push(awayTeam + " played without winner and goals count was over 2.5 in the last " + props.awayOBJAll.draw3SER + " games");
             }
 
             final = null;
@@ -952,7 +959,7 @@ class SingleBettingBox extends Component {
 
 
         // Away team win and over 2.5 goals
-        chance = this.calcChance("lose3", "win3", 60);
+        chance = calcChance("lose3", "win3", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -963,12 +970,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost and goals count was over 2.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.lose3SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + this.props.homeOBJHome.lose3SER + " of their home games");
+            if (props.homeOBJHome.lose3SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + props.homeOBJHome.lose3SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.lose3SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + this.props.homeOBJAll.lose3SER + " of all the games");
+            if (props.homeOBJAll.lose3SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + props.homeOBJAll.lose3SER + " of all the games");
             }
 
 
@@ -977,12 +984,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won and goals count was over 2.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.win3SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + this.props.awayOBJAway.win3SER + " of their away games");
+            if (props.awayOBJAway.win3SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + props.awayOBJAway.win3SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.win3SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + this.props.awayOBJAll.win3SER + " of all the games");
+            if (props.awayOBJAll.win3SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + props.awayOBJAll.win3SER + " of all the games");
             }
 
             final = null;
@@ -1007,12 +1014,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost and goals count was over 2.5 in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.lose3SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + this.props.homeOBJHome.lose3SER + " of their home games");
+            if (props.homeOBJHome.lose3SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + props.homeOBJHome.lose3SER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.lose3SER > 2) {
-                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + this.props.homeOBJAll.lose3SER + " of all the games");
+            if (props.homeOBJAll.lose3SER > 2) {
+                explanation.push(homeTeam + " lost and goals count was over 2.5 in the last " + props.homeOBJAll.lose3SER + " of all the games");
             }
 
 
@@ -1021,12 +1028,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won and goals count was over 2.5 in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.win3SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + this.props.awayOBJAway.win3SER + " of their away games");
+            if (props.awayOBJAway.win3SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + props.awayOBJAway.win3SER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.win3SER > 2) {
-                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + this.props.awayOBJAll.win3SER + " of all the games");
+            if (props.awayOBJAll.win3SER > 2) {
+                explanation.push(awayTeam + " won and goals count was over 2.5 in the last " + props.awayOBJAll.win3SER + " of all the games");
             }
 
             final = null;
@@ -1044,7 +1051,7 @@ class SingleBettingBox extends Component {
 
 
         // over 1.5 goals
-        chance = this.calcChance("over_1_5", "over_1_5", 85);
+        chance = calcChance("over_1_5", "over_1_5", 85);
         if (chance.total >= 85) {
             explanation.length = 0;
 
@@ -1055,12 +1062,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_1_5SER > 2) {
-                explanation.push("Over 1.5 goals have been scored in the last " + this.props.homeOBJHome.over_1_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_1_5SER > 2) {
+                explanation.push("Over 1.5 goals have been scored in the last " + props.homeOBJHome.over_1_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_1_5SER > 2) {
-                explanation.push("Over 1.5 goals have been scored in the last " + this.props.homeOBJAll.over_1_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_1_5SER > 2) {
+                explanation.push("Over 1.5 goals have been scored in the last " + props.homeOBJAll.over_1_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1069,12 +1076,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_1_5SER > 2) {
-                explanation.push("Over 1.5 goals have been scored in the last " + this.props.awayOBJAway.over_1_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_1_5SER > 2) {
+                explanation.push("Over 1.5 goals have been scored in the last " + props.awayOBJAway.over_1_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_1_5SER > 2) {
-                explanation.push("Over 1.5 goals have been scored in the last " + this.props.awayOBJAll.over_1_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_1_5SER > 2) {
+                explanation.push("Over 1.5 goals have been scored in the last " + props.awayOBJAll.over_1_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1094,7 +1101,7 @@ class SingleBettingBox extends Component {
 
 
         // over 2.5 goals
-        chance = this.calcChance("over_2_5", "over_2_5", 70);
+        chance = calcChance("over_2_5", "over_2_5", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -1105,12 +1112,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_2_5SER > 2) {
-                explanation.push("Over 2.5 goals have been scored in the last " + this.props.homeOBJHome.over_2_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_2_5SER > 2) {
+                explanation.push("Over 2.5 goals have been scored in the last " + props.homeOBJHome.over_2_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_2_5SER > 2) {
-                explanation.push("Over 2.5 goals have been scored in the last " + this.props.homeOBJAll.over_2_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_2_5SER > 2) {
+                explanation.push("Over 2.5 goals have been scored in the last " + props.homeOBJAll.over_2_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1119,12 +1126,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_2_5SER > 2) {
-                explanation.push("Over 2.5 goals have been scored in the last " + this.props.awayOBJAway.over_2_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_2_5SER > 2) {
+                explanation.push("Over 2.5 goals have been scored in the last " + props.awayOBJAway.over_2_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_2_5SER > 2) {
-                explanation.push("Over 2.5 goals have been scored in the last " + this.props.awayOBJAll.over_2_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_2_5SER > 2) {
+                explanation.push("Over 2.5 goals have been scored in the last " + props.awayOBJAll.over_2_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1144,7 +1151,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 3.5 goals
-        chance = this.calcChance("over_3_5", "over_3_5", 55);
+        chance = calcChance("over_3_5", "over_3_5", 55);
         if (chance.total >= 55) {
             explanation.length = 0;
 
@@ -1155,12 +1162,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 3.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.homeOBJHome.over_3_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.homeOBJHome.over_3_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.homeOBJAll.over_3_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.homeOBJAll.over_3_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1169,12 +1176,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 3.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.awayOBJAway.over_3_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.awayOBJAway.over_3_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.awayOBJAll.over_3_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.awayOBJAll.over_3_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1200,12 +1207,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 3.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.homeOBJHome.over_3_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.homeOBJHome.over_3_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.homeOBJAll.over_3_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.homeOBJAll.over_3_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1214,12 +1221,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 3.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.awayOBJAway.over_3_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.awayOBJAway.over_3_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_3_5SER > 2) {
-                explanation.push("Over 3.5 goals have been scored in the last " + this.props.awayOBJAll.over_3_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_3_5SER > 2) {
+                explanation.push("Over 3.5 goals have been scored in the last " + props.awayOBJAll.over_3_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1238,7 +1245,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 4.5 goals
-        chance = this.calcChance("over_4_5", "over_4_5", 45);
+        chance = calcChance("over_4_5", "over_4_5", 45);
         if (chance.total >= 45) {
             explanation.length = 0;
 
@@ -1249,12 +1256,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 4.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.homeOBJHome.over_4_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.homeOBJHome.over_4_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.homeOBJAll.over_4_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.homeOBJAll.over_4_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1263,12 +1270,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 4.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.awayOBJAway.over_4_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.awayOBJAway.over_4_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.awayOBJAll.over_4_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.awayOBJAll.over_4_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1294,12 +1301,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 4.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.homeOBJHome.over_4_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.homeOBJHome.over_4_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.homeOBJAll.over_4_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.homeOBJAll.over_4_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1308,12 +1315,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 4.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.awayOBJAway.over_4_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.awayOBJAway.over_4_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_4_5SER > 2) {
-                explanation.push("Over 4.5 goals have been scored in the last " + this.props.awayOBJAll.over_4_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_4_5SER > 2) {
+                explanation.push("Over 4.5 goals have been scored in the last " + props.awayOBJAll.over_4_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1332,7 +1339,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 5.5 goals
-        chance = this.calcChance("over_5_5", "over_5_5", 40);
+        chance = calcChance("over_5_5", "over_5_5", 40);
         if (chance.total >= 40) {
             explanation.length = 0;
 
@@ -1343,12 +1350,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 5.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.homeOBJHome.over_5_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.homeOBJHome.over_5_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.homeOBJAll.over_5_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.homeOBJAll.over_5_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1357,12 +1364,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 5.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.awayOBJAway.over_5_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.awayOBJAway.over_5_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.awayOBJAll.over_5_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.awayOBJAll.over_5_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1388,12 +1395,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 5.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.homeOBJHome.over_5_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.homeOBJHome.over_5_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.homeOBJAll.over_5_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.homeOBJAll.over_5_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1402,12 +1409,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 5.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.awayOBJAway.over_5_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.awayOBJAway.over_5_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_5_5SER > 2) {
-                explanation.push("Over 5.5 goals have been scored in the last " + this.props.awayOBJAll.over_5_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_5_5SER > 2) {
+                explanation.push("Over 5.5 goals have been scored in the last " + props.awayOBJAll.over_5_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1426,7 +1433,7 @@ class SingleBettingBox extends Component {
 
 
         // Under 1.5 goals
-        chance = this.calcChance("under_1_5", "under_1_5", 60);
+        chance = calcChance("under_1_5", "under_1_5", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -1437,12 +1444,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 1.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.homeOBJHome.under_1_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.homeOBJHome.under_1_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.homeOBJAll.under_1_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.homeOBJAll.under_1_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1451,12 +1458,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 1.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.awayOBJAway.under_1_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.awayOBJAway.under_1_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.awayOBJAll.under_1_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.awayOBJAll.under_1_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1482,12 +1489,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 1.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.homeOBJHome.under_1_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.homeOBJHome.under_1_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.homeOBJAll.under_1_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.homeOBJAll.under_1_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1496,12 +1503,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 1.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.awayOBJAway.under_1_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.awayOBJAway.under_1_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.under_1_5SER > 2) {
-                explanation.push("Under 1.5 goals have been scored in the last " + this.props.awayOBJAll.under_1_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.under_1_5SER > 2) {
+                explanation.push("Under 1.5 goals have been scored in the last " + props.awayOBJAll.under_1_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1520,7 +1527,7 @@ class SingleBettingBox extends Component {
 
 
         // Under 2.5 goals
-        chance = this.calcChance("under_2_5", "under_2_5", 65);
+        chance = calcChance("under_2_5", "under_2_5", 65);
         if (chance.total >= 65) {
             explanation.length = 0;
 
@@ -1531,12 +1538,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 2.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.under_2_5SER > 2) {
-                explanation.push("Under 2.5 goals have been scored in the last " + this.props.homeOBJHome.under_2_5SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.under_2_5SER > 2) {
+                explanation.push("Under 2.5 goals have been scored in the last " + props.homeOBJHome.under_2_5SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.under_2_5SER > 2) {
-                explanation.push("Under 2.5 goals have been scored in the last " + this.props.homeOBJAll.under_2_5SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.under_2_5SER > 2) {
+                explanation.push("Under 2.5 goals have been scored in the last " + props.homeOBJAll.under_2_5SER + " of " + homeTeam + " games");
             }
 
 
@@ -1545,12 +1552,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Under 2.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.under_2_5SER > 2) {
-                explanation.push("Under 2.5 goals have been scored in the last " + this.props.awayOBJAway.under_2_5SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.under_2_5SER > 2) {
+                explanation.push("Under 2.5 goals have been scored in the last " + props.awayOBJAway.under_2_5SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.under_2_5SER > 2) {
-                explanation.push("Under 2.5 goals have been scored in the last " + this.props.awayOBJAll.under_2_5SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.under_2_5SER > 2) {
+                explanation.push("Under 2.5 goals have been scored in the last " + props.awayOBJAll.under_2_5SER + " of " + awayTeam + " games");
             }
 
 
@@ -1569,7 +1576,7 @@ class SingleBettingBox extends Component {
         }
 
         // Over 0.5 goals First Half
-        chance = this.calcChance("over_0_5_HT", "over_0_5_HT", 82);
+        chance = calcChance("over_0_5_HT", "over_0_5_HT", 82);
         if (chance.total >= 80) {
             explanation.length = 0;
 
@@ -1580,12 +1587,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 0.5 goals at HT have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_0_5_HTSER > 2) {
-                explanation.push("Over 0.5 goals at HT have been scored in the last " + this.props.homeOBJHome.over_0_5_HTSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_0_5_HTSER > 2) {
+                explanation.push("Over 0.5 goals at HT have been scored in the last " + props.homeOBJHome.over_0_5_HTSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_0_5_HTSER > 2) {
-                explanation.push("Over 0.5 goals at HT have been scored in the last " + this.props.homeOBJAll.over_0_5_HTSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_0_5_HTSER > 2) {
+                explanation.push("Over 0.5 goals at HT have been scored in the last " + props.homeOBJAll.over_0_5_HTSER + " of " + homeTeam + " games");
             }
 
 
@@ -1594,12 +1601,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 0.5 goals at HT have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_0_5_HTSER > 2) {
-                explanation.push("Over 0.5 goals at HT have been scored in the last " + this.props.awayOBJAway.over_0_5_HTSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_0_5_HTSER > 2) {
+                explanation.push("Over 0.5 goals at HT have been scored in the last " + props.awayOBJAway.over_0_5_HTSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_0_5_HTSER > 2) {
-                explanation.push("Over 0.5 goals at HT have been scored in the last " + this.props.awayOBJAll.over_0_5_HTSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_0_5_HTSER > 2) {
+                explanation.push("Over 0.5 goals at HT have been scored in the last " + props.awayOBJAll.over_0_5_HTSER + " of " + awayTeam + " games");
             }
 
 
@@ -1618,7 +1625,7 @@ class SingleBettingBox extends Component {
         }
 
         // Over 1.5 goals at First Half
-        chance = this.calcChance("over_1_5_HT", "over_1_5_HT", 60);
+        chance = calcChance("over_1_5_HT", "over_1_5_HT", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -1629,12 +1636,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at HT have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.homeOBJHome.over_1_5_HTSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.homeOBJHome.over_1_5_HTSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.homeOBJAll.over_1_5_HTSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.homeOBJAll.over_1_5_HTSER + " of " + homeTeam + " games");
             }
 
 
@@ -1643,12 +1650,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at HT have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.awayOBJAway.over_1_5_HTSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.awayOBJAway.over_1_5_HTSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.awayOBJAll.over_1_5_HTSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.awayOBJAll.over_1_5_HTSER + " of " + awayTeam + " games");
             }
 
 
@@ -1674,12 +1681,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at HT have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.homeOBJHome.over_1_5_HTSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.homeOBJHome.over_1_5_HTSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.homeOBJAll.over_1_5_HTSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.homeOBJAll.over_1_5_HTSER + " of " + homeTeam + " games");
             }
 
 
@@ -1688,12 +1695,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at HT have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.awayOBJAway.over_1_5_HTSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.awayOBJAway.over_1_5_HTSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_1_5_HTSER > 2) {
-                explanation.push("Over 1.5 goals at HT have been scored in the last " + this.props.awayOBJAll.over_1_5_HTSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_1_5_HTSER > 2) {
+                explanation.push("Over 1.5 goals at HT have been scored in the last " + props.awayOBJAll.over_1_5_HTSER + " of " + awayTeam + " games");
             }
 
 
@@ -1712,7 +1719,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 2.5 goals First Half
-        chance = this.calcChance("over_2_5_HT", "over_2_5_HT", 50);
+        chance = calcChance("over_2_5_HT", "over_2_5_HT", 50);
         if (chance.total >= 50) {
             explanation.length = 0;
 
@@ -1723,12 +1730,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at HT have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.homeOBJHome.over_2_5_HTSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.homeOBJHome.over_2_5_HTSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.homeOBJAll.over_2_5_HTSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.homeOBJAll.over_2_5_HTSER + " of " + homeTeam + " games");
             }
 
 
@@ -1737,12 +1744,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at HT have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.awayOBJAway.over_2_5_HTSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.awayOBJAway.over_2_5_HTSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.awayOBJAll.over_2_5_HTSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.awayOBJAll.over_2_5_HTSER + " of " + awayTeam + " games");
             }
 
 
@@ -1768,12 +1775,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at HT have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.homeOBJHome.over_2_5_HTSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.homeOBJHome.over_2_5_HTSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.homeOBJAll.over_2_5_HTSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.homeOBJAll.over_2_5_HTSER + " of " + homeTeam + " games");
             }
 
 
@@ -1782,12 +1789,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at HT have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.awayOBJAway.over_2_5_HTSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.awayOBJAway.over_2_5_HTSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_2_5_HTSER > 2) {
-                explanation.push("Over 2.5 goals at HT have been scored in the last " + this.props.awayOBJAll.over_2_5_HTSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_2_5_HTSER > 2) {
+                explanation.push("Over 2.5 goals at HT have been scored in the last " + props.awayOBJAll.over_2_5_HTSER + " of " + awayTeam + " games");
             }
 
 
@@ -1806,7 +1813,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 0.5 goals at Second Half
-        chance = this.calcChance("over_0_5_SH", "over_0_5_SH", 82);
+        chance = calcChance("over_0_5_SH", "over_0_5_SH", 82);
         if (chance.total >= 82) {
             explanation.length = 0;
 
@@ -1817,12 +1824,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 0.5 goals at second half have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_0_5_SHSER > 2) {
-                explanation.push("Over 0.5 goals at second half have been scored in the last " + this.props.homeOBJHome.over_0_5_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_0_5_SHSER > 2) {
+                explanation.push("Over 0.5 goals at second half have been scored in the last " + props.homeOBJHome.over_0_5_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_0_5_SHSER > 2) {
-                explanation.push("Over 0.5 goals at second half have been scored in the last " + this.props.homeOBJAll.over_0_5_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_0_5_SHSER > 2) {
+                explanation.push("Over 0.5 goals at second half have been scored in the last " + props.homeOBJAll.over_0_5_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -1831,12 +1838,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 0.5 goals at second half have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_0_5_SHSER > 2) {
-                explanation.push("Over 0.5 goals at second half have been scored in the last " + this.props.awayOBJAway.over_0_5_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_0_5_SHSER > 2) {
+                explanation.push("Over 0.5 goals at second half have been scored in the last " + props.awayOBJAway.over_0_5_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_0_5_SHSER > 2) {
-                explanation.push("Over 0.5 goals at second half have been scored in the last " + this.props.awayOBJAll.over_0_5_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_0_5_SHSER > 2) {
+                explanation.push("Over 0.5 goals at second half have been scored in the last " + props.awayOBJAll.over_0_5_SHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -1854,7 +1861,7 @@ class SingleBettingBox extends Component {
         }
 
         // Over 1.5 goals at Second Half
-        chance = this.calcChance("over_1_5_SH", "over_1_5_SH", 65);
+        chance = calcChance("over_1_5_SH", "over_1_5_SH", 65);
         if (chance.total >= 65) {
             explanation.length = 0;
 
@@ -1865,12 +1872,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at second half have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.homeOBJHome.over_1_5_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.homeOBJHome.over_1_5_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.homeOBJAll.over_1_5_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.homeOBJAll.over_1_5_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -1879,12 +1886,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at second half have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.awayOBJAway.over_1_5_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.awayOBJAway.over_1_5_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.awayOBJAll.over_1_5_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.awayOBJAll.over_1_5_SHSER + " of " + awayTeam + " games");
             }
 
 
@@ -1910,12 +1917,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at second half have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.homeOBJHome.over_1_5_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.homeOBJHome.over_1_5_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.homeOBJAll.over_1_5_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.homeOBJAll.over_1_5_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -1924,12 +1931,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 1.5 goals at second half have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.awayOBJAway.over_1_5_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.awayOBJAway.over_1_5_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_1_5_SHSER > 2) {
-                explanation.push("Over 1.5 goals at second half have been scored in the last " + this.props.awayOBJAll.over_1_5_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_1_5_SHSER > 2) {
+                explanation.push("Over 1.5 goals at second half have been scored in the last " + props.awayOBJAll.over_1_5_SHSER + " of " + awayTeam + " games");
             }
 
 
@@ -1948,7 +1955,7 @@ class SingleBettingBox extends Component {
 
 
         // Over 2.5 goals at Second Half
-        chance = this.calcChance("over_2_5_SH", "over_2_5_SH", 50);
+        chance = calcChance("over_2_5_SH", "over_2_5_SH", 50);
         if (chance.total >= 50) {
             explanation.length = 0;
 
@@ -1959,12 +1966,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at second half have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.homeOBJHome.over_2_5_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.homeOBJHome.over_2_5_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.homeOBJAll.over_2_5_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.homeOBJAll.over_2_5_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -1973,12 +1980,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at second half have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.awayOBJAway.over_2_5_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.awayOBJAway.over_2_5_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.awayOBJAll.over_2_5_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.awayOBJAll.over_2_5_SHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -2003,12 +2010,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at second half have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.homeOBJHome.over_2_5_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.homeOBJHome.over_2_5_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.homeOBJAll.over_2_5_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.homeOBJAll.over_2_5_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -2017,12 +2024,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Over 2.5 goals at second half have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.awayOBJAway.over_2_5_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.awayOBJAway.over_2_5_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.over_2_5_SHSER > 2) {
-                explanation.push("Over 2.5 goals at second half have been scored in the last " + this.props.awayOBJAll.over_2_5_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.over_2_5_SHSER > 2) {
+                explanation.push("Over 2.5 goals at second half have been scored in the last " + props.awayOBJAll.over_2_5_SHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -2040,7 +2047,7 @@ class SingleBettingBox extends Component {
 
 
         // Both teams to score
-        chance = this.calcChance("bts", "bts", 68);
+        chance = calcChance("bts", "bts", 68);
         if (chance.total >= 68) {
             explanation.length = 0;
 
@@ -2051,12 +2058,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.homeOBJHome.btsSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.homeOBJHome.btsSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.homeOBJAll.btsSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.homeOBJAll.btsSER + " of " + homeTeam + " games");
             }
 
 
@@ -2065,12 +2072,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.awayOBJAway.btsSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.awayOBJAway.btsSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.awayOBJAll.btsSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.awayOBJAll.btsSER + " of " + awayTeam + " games");
             }
 
 
@@ -2096,12 +2103,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.homeOBJHome.btsSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.homeOBJHome.btsSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.homeOBJAll.btsSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.homeOBJAll.btsSER + " of " + homeTeam + " games");
             }
 
 
@@ -2110,12 +2117,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.awayOBJAway.btsSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.awayOBJAway.btsSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btsSER > 2) {
-                explanation.push("Both teams have scored in the last " + this.props.awayOBJAll.btsSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btsSER > 2) {
+                explanation.push("Both teams have scored in the last " + props.awayOBJAll.btsSER + " of " + awayTeam + " games");
             }
 
 
@@ -2134,7 +2141,7 @@ class SingleBettingBox extends Component {
 
 
         // Both teams to score First Half
-        chance = this.calcChance("btsFH", "btsFH", 48);
+        chance = calcChance("btsFH", "btsFH", 48);
         if (chance.total >= 48) {
             explanation.length = 0;
 
@@ -2145,12 +2152,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the first half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.homeOBJHome.btsFHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.homeOBJHome.btsFHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.homeOBJAll.btsFHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.homeOBJAll.btsFHSER + " of " + homeTeam + " games");
             }
 
 
@@ -2159,12 +2166,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the first half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.awayOBJAway.btsFHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.awayOBJAway.btsFHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.awayOBJAll.btsFHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.awayOBJAll.btsFHSER + " of " + awayTeam + " games");
             }
 
 
@@ -2190,12 +2197,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the first half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.homeOBJHome.btsFHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.homeOBJHome.btsFHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.homeOBJAll.btsFHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.homeOBJAll.btsFHSER + " of " + homeTeam + " games");
             }
 
 
@@ -2204,12 +2211,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the first half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.awayOBJAway.btsFHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.awayOBJAway.btsFHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btsFHSER > 2) {
-                explanation.push("Both teams have scored in the first half in the last " + this.props.awayOBJAll.btsFHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btsFHSER > 2) {
+                explanation.push("Both teams have scored in the first half in the last " + props.awayOBJAll.btsFHSER + " of " + awayTeam + " games");
             }
 
 
@@ -2227,7 +2234,7 @@ class SingleBettingBox extends Component {
         }
 
         // Both teams to score Second Half
-        chance = this.calcChance("BTTS_SH", "BTTS_SH", 55);
+        chance = calcChance("BTTS_SH", "BTTS_SH", 55);
         if (chance.total >= 55) {
             explanation.length = 0;
 
@@ -2238,12 +2245,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the second half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.homeOBJHome.BTTS_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.homeOBJHome.BTTS_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.homeOBJAll.BTTS_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.homeOBJAll.BTTS_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -2252,12 +2259,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the second half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.awayOBJAway.BTTS_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.awayOBJAway.BTTS_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.awayOBJAll.BTTS_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.awayOBJAll.BTTS_SHSER + " of " + awayTeam + " games");
             }
 
 
@@ -2283,12 +2290,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the second half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.homeOBJHome.BTTS_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.homeOBJHome.BTTS_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.homeOBJAll.BTTS_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.homeOBJAll.BTTS_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -2297,12 +2304,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored in the second half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.awayOBJAway.BTTS_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.awayOBJAway.BTTS_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.BTTS_SHSER > 2) {
-                explanation.push("Both teams have scored in the second half in the last " + this.props.awayOBJAll.BTTS_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.BTTS_SHSER > 2) {
+                explanation.push("Both teams have scored in the second half in the last " + props.awayOBJAll.BTTS_SHSER + " of " + awayTeam + " games");
             }
 
 
@@ -2322,7 +2329,7 @@ class SingleBettingBox extends Component {
 
 
         // BTTS And Over 2.5 Goals
-        chance = this.calcChance("btts3", "btts3", 65);
+        chance = calcChance("btts3", "btts3", 65);
         if (chance.total >= 65) {
             explanation.length = 0;
 
@@ -2333,12 +2340,12 @@ class SingleBettingBox extends Component {
                 explanation.push("BTTS and over 2.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.homeOBJHome.btts3SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.homeOBJHome.btts3SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.homeOBJAll.btts3SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.homeOBJAll.btts3SER + " of " + homeTeam + " games");
             }
 
 
@@ -2347,12 +2354,12 @@ class SingleBettingBox extends Component {
                 explanation.push("BTTS and over 2.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.awayOBJAway.btts3SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.awayOBJAway.btts3SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.awayOBJAll.btts3SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.awayOBJAll.btts3SER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -2377,12 +2384,12 @@ class SingleBettingBox extends Component {
                 explanation.push("BTTS and over 2.5 goals have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.homeOBJHome.btts3SER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.homeOBJHome.btts3SER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.homeOBJAll.btts3SER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.homeOBJAll.btts3SER + " of " + homeTeam + " games");
             }
 
 
@@ -2391,12 +2398,12 @@ class SingleBettingBox extends Component {
                 explanation.push("BTTS and over 2.5 goals have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.awayOBJAway.btts3SER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.awayOBJAway.btts3SER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.btts3SER > 2) {
-                explanation.push("BTTS and over 2.5 goals have been scored in the last " + this.props.awayOBJAll.btts3SER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.btts3SER > 2) {
+                explanation.push("BTTS and over 2.5 goals have been scored in the last " + props.awayOBJAll.btts3SER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -2413,7 +2420,7 @@ class SingleBettingBox extends Component {
         }
 
         // Home Team Win and BTTS
-        chance = this.calcChance("win_BTTS", "lose_BTTS", 60);
+        chance = calcChance("win_BTTS", "lose_BTTS", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -2424,12 +2431,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + homeTeam + " won in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJHome.win_BTTSSER + " home games");
+            if (props.homeOBJHome.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJHome.win_BTTSSER + " home games");
             }
 
-            if (this.props.homeOBJAll.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJAll.win_BTTSSER + " games");
+            if (props.homeOBJAll.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJAll.win_BTTSSER + " games");
             }
 
 
@@ -2438,12 +2445,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + awayTeam + " lost in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + this.props.awayOBJAway.lose_BTTSSER + " away games");
+            if (props.awayOBJAway.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + props.awayOBJAway.lose_BTTSSER + " away games");
             }
 
-            if (this.props.awayOBJAll.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + this.props.awayOBJAll.lose_BTTSSER + " games");
+            if (props.awayOBJAll.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + props.awayOBJAll.lose_BTTSSER + " games");
             }
 
             final = null;
@@ -2468,12 +2475,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + homeTeam + " won in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJHome.win_BTTSSER + " home games");
+            if (props.homeOBJHome.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJHome.win_BTTSSER + " home games");
             }
 
-            if (this.props.homeOBJAll.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJAll.win_BTTSSER + " games");
+            if (props.homeOBJAll.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJAll.win_BTTSSER + " games");
             }
 
 
@@ -2482,12 +2489,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + awayTeam + " lost in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + this.props.awayOBJAway.lose_BTTSSER + " away games");
+            if (props.awayOBJAway.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + props.awayOBJAway.lose_BTTSSER + " away games");
             }
 
-            if (this.props.awayOBJAll.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + this.props.awayOBJAll.lose_BTTSSER + " games");
+            if (props.awayOBJAll.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " lost in last " + props.awayOBJAll.lose_BTTSSER + " games");
             }
 
             final = null;
@@ -2504,7 +2511,7 @@ class SingleBettingBox extends Component {
         }
 
         // Away Team Win and BTTS
-        chance = this.calcChance("lose_BTTS", "win_BTTS", 60);
+        chance = calcChance("lose_BTTS", "win_BTTS", 60);
         if (chance.total >= 60) {
             explanation.length = 0;
 
@@ -2515,12 +2522,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + homeTeam + " lost in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJHome.lose_BTTSSER + " home games");
+            if (props.homeOBJHome.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJHome.lose_BTTSSER + " home games");
             }
 
-            if (this.props.homeOBJAll.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJAll.lose_BTTSSER + " games");
+            if (props.homeOBJAll.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJAll.lose_BTTSSER + " games");
             }
 
 
@@ -2529,12 +2536,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + awayTeam + " won in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " won in last " + this.props.awayOBJAway.win_BTTSSER + " away games");
+            if (props.awayOBJAway.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " won in last " + props.awayOBJAway.win_BTTSSER + " away games");
             }
 
-            if (this.props.awayOBJAll.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " won in last " + this.props.awayOBJAll.win_BTTSSER + " games");
+            if (props.awayOBJAll.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " won in last " + props.awayOBJAll.win_BTTSSER + " games");
             }
 
             final = null;
@@ -2559,12 +2566,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + homeTeam + " lost in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJHome.lose_BTTSSER + " home games");
+            if (props.homeOBJHome.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJHome.lose_BTTSSER + " home games");
             }
 
-            if (this.props.homeOBJAll.lose_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + homeTeam + " won in last " + this.props.homeOBJAll.lose_BTTSSER + " games");
+            if (props.homeOBJAll.lose_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + homeTeam + " won in last " + props.homeOBJAll.lose_BTTSSER + " games");
             }
 
 
@@ -2573,12 +2580,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Both teams have scored and " + awayTeam + " won in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " won in last " + this.props.awayOBJAway.win_BTTSSER + " away games");
+            if (props.awayOBJAway.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " won in last " + props.awayOBJAway.win_BTTSSER + " away games");
             }
 
-            if (this.props.awayOBJAll.win_BTTSSER > 2) {
-                explanation.push("Both teams have scored and " + awayTeam + " won in last " + this.props.awayOBJAll.win_BTTSSER + " games");
+            if (props.awayOBJAll.win_BTTSSER > 2) {
+                explanation.push("Both teams have scored and " + awayTeam + " won in last " + props.awayOBJAll.win_BTTSSER + " games");
             }
 
             final = null;
@@ -2598,7 +2605,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team Win Half TIme
-        chance = this.calcChance("leadHT", "loseHT", 58);
+        chance = calcChance("leadHT", "loseHT", 58);
         if (chance.total >= 58) {
             explanation.length = 0;
 
@@ -2609,12 +2616,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " led at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.leadHTSER > 2) {
-                explanation.push(homeTeam + " led at half-time in last " + this.props.homeOBJHome.leadHTSER + " home games");
+            if (props.homeOBJHome.leadHTSER > 2) {
+                explanation.push(homeTeam + " led at half-time in last " + props.homeOBJHome.leadHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.leadHTSER > 2) {
-                explanation.push(homeTeam + " led at half-time in last " + this.props.homeOBJAll.leadHTSER + " games");
+            if (props.homeOBJAll.leadHTSER > 2) {
+                explanation.push(homeTeam + " led at half-time in last " + props.homeOBJAll.leadHTSER + " games");
             }
 
 
@@ -2623,12 +2630,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.loseHTSER > 2) {
-                explanation.push(awayTeam + " lost at half-time in last " + this.props.awayOBJAway.loseHTSER + " away games");
+            if (props.awayOBJAway.loseHTSER > 2) {
+                explanation.push(awayTeam + " lost at half-time in last " + props.awayOBJAway.loseHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.loseHTSER > 2) {
-                explanation.push(awayTeam + " lost at half-time in last " + this.props.awayOBJAll.loseHTSER + " games");
+            if (props.awayOBJAll.loseHTSER > 2) {
+                explanation.push(awayTeam + " lost at half-time in last " + props.awayOBJAll.loseHTSER + " games");
             }
 
             final = null;
@@ -2653,12 +2660,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " led at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.leadHTSER > 2) {
-                explanation.push(homeTeam + " led at half-time in last " + this.props.homeOBJHome.leadHTSER + " home games");
+            if (props.homeOBJHome.leadHTSER > 2) {
+                explanation.push(homeTeam + " led at half-time in last " + props.homeOBJHome.leadHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.leadHTSER > 2) {
-                explanation.push(homeTeam + " led at half-time in last " + this.props.homeOBJAll.leadHTSER + " games");
+            if (props.homeOBJAll.leadHTSER > 2) {
+                explanation.push(homeTeam + " led at half-time in last " + props.homeOBJAll.leadHTSER + " games");
             }
 
 
@@ -2667,12 +2674,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.loseHTSER > 2) {
-                explanation.push(awayTeam + " lost at half-time in last " + this.props.awayOBJAway.loseHTSER + " away games");
+            if (props.awayOBJAway.loseHTSER > 2) {
+                explanation.push(awayTeam + " lost at half-time in last " + props.awayOBJAway.loseHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.loseHTSER > 2) {
-                explanation.push(awayTeam + " lost at half-time in last " + this.props.awayOBJAll.loseHTSER + " games");
+            if (props.awayOBJAll.loseHTSER > 2) {
+                explanation.push(awayTeam + " lost at half-time in last " + props.awayOBJAll.loseHTSER + " games");
             }
 
             final = null;
@@ -2691,7 +2698,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team Win Half TIme
-        chance = this.calcChance("loseHT", "leadHT", 58);
+        chance = calcChance("loseHT", "leadHT", 58);
         if (chance.total >= 58) {
             explanation.length = 0;
 
@@ -2702,12 +2709,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.loseHTSER > 2) {
-                explanation.push(homeTeam + " lost at half-time in last " + this.props.homeOBJHome.loseHTSER + " home games");
+            if (props.homeOBJHome.loseHTSER > 2) {
+                explanation.push(homeTeam + " lost at half-time in last " + props.homeOBJHome.loseHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.loseHTSER > 2) {
-                explanation.push(homeTeam + " lost at half-time in last " + this.props.homeOBJAll.loseHTSER + " games");
+            if (props.homeOBJAll.loseHTSER > 2) {
+                explanation.push(homeTeam + " lost at half-time in last " + props.homeOBJAll.loseHTSER + " games");
             }
 
 
@@ -2716,12 +2723,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.leadHTSER > 2) {
-                explanation.push(awayTeam + " won at half-time in last " + this.props.awayOBJAway.leadHTSER + " away games");
+            if (props.awayOBJAway.leadHTSER > 2) {
+                explanation.push(awayTeam + " won at half-time in last " + props.awayOBJAway.leadHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.leadHTSER > 2) {
-                explanation.push(awayTeam + " won at half-time in last " + this.props.awayOBJAll.leadHTSER + " games");
+            if (props.awayOBJAll.leadHTSER > 2) {
+                explanation.push(awayTeam + " won at half-time in last " + props.awayOBJAll.leadHTSER + " games");
             }
 
             final = null;
@@ -2746,12 +2753,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.loseHTSER > 2) {
-                explanation.push(homeTeam + " lost at half-time in last " + this.props.homeOBJHome.loseHTSER + " home games");
+            if (props.homeOBJHome.loseHTSER > 2) {
+                explanation.push(homeTeam + " lost at half-time in last " + props.homeOBJHome.loseHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.loseHTSER > 2) {
-                explanation.push(homeTeam + " lost at half-time in last " + this.props.homeOBJAll.loseHTSER + " games");
+            if (props.homeOBJAll.loseHTSER > 2) {
+                explanation.push(homeTeam + " lost at half-time in last " + props.homeOBJAll.loseHTSER + " games");
             }
 
 
@@ -2760,12 +2767,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.leadHTSER > 2) {
-                explanation.push(awayTeam + " won at half-time in last " + this.props.awayOBJAway.leadHTSER + " away games");
+            if (props.awayOBJAway.leadHTSER > 2) {
+                explanation.push(awayTeam + " won at half-time in last " + props.awayOBJAway.leadHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.leadHTSER > 2) {
-                explanation.push(awayTeam + " won at half-time in last " + this.props.awayOBJAll.leadHTSER + " games");
+            if (props.awayOBJAll.leadHTSER > 2) {
+                explanation.push(awayTeam + " won at half-time in last " + props.awayOBJAll.leadHTSER + " games");
             }
 
             final = null;
@@ -2784,7 +2791,7 @@ class SingleBettingBox extends Component {
 
 
         // Draw Half TIme
-        chance = this.calcChance("drawHT", "drawHT", 62);
+        chance = calcChance("drawHT", "drawHT", 62);
         if (chance.total >= 62) {
             explanation.length = 0;
 
@@ -2795,12 +2802,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " draw at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.drawHTSER > 2) {
-                explanation.push(homeTeam + " draw at half-time in last " + this.props.homeOBJHome.drawHTSER + " home games");
+            if (props.homeOBJHome.drawHTSER > 2) {
+                explanation.push(homeTeam + " draw at half-time in last " + props.homeOBJHome.drawHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.drawHTSER > 2) {
-                explanation.push(homeTeam + " draw at half-time in last " + this.props.homeOBJAll.drawHTSER + " games");
+            if (props.homeOBJAll.drawHTSER > 2) {
+                explanation.push(homeTeam + " draw at half-time in last " + props.homeOBJAll.drawHTSER + " games");
             }
 
 
@@ -2809,12 +2816,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " draw at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.drawHTSER > 2) {
-                explanation.push(awayTeam + " draw at half-time in last " + this.props.awayOBJAway.drawHTSER + " away games");
+            if (props.awayOBJAway.drawHTSER > 2) {
+                explanation.push(awayTeam + " draw at half-time in last " + props.awayOBJAway.drawHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.drawHTSER > 2) {
-                explanation.push(awayTeam + " draw at half-time in last " + this.props.awayOBJAll.drawHTSER + " games");
+            if (props.awayOBJAll.drawHTSER > 2) {
+                explanation.push(awayTeam + " draw at half-time in last " + props.awayOBJAll.drawHTSER + " games");
             }
 
             final = null;
@@ -2839,12 +2846,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " draw at half-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.drawHTSER > 2) {
-                explanation.push(homeTeam + " draw at half-time in last " + this.props.homeOBJHome.drawHTSER + " home games");
+            if (props.homeOBJHome.drawHTSER > 2) {
+                explanation.push(homeTeam + " draw at half-time in last " + props.homeOBJHome.drawHTSER + " home games");
             }
 
-            if (this.props.homeOBJAll.drawHTSER > 2) {
-                explanation.push(homeTeam + " draw at half-time in last " + this.props.homeOBJAll.drawHTSER + " games");
+            if (props.homeOBJAll.drawHTSER > 2) {
+                explanation.push(homeTeam + " draw at half-time in last " + props.homeOBJAll.drawHTSER + " games");
             }
 
 
@@ -2853,12 +2860,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " draw at half-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.drawHTSER > 2) {
-                explanation.push(awayTeam + " draw at half-time in last " + this.props.awayOBJAway.drawHTSER + " away games");
+            if (props.awayOBJAway.drawHTSER > 2) {
+                explanation.push(awayTeam + " draw at half-time in last " + props.awayOBJAway.drawHTSER + " away games");
             }
 
-            if (this.props.awayOBJAll.drawHTSER > 2) {
-                explanation.push(awayTeam + " draw at half-time in last " + this.props.awayOBJAll.drawHTSER + " games");
+            if (props.awayOBJAll.drawHTSER > 2) {
+                explanation.push(awayTeam + " draw at half-time in last " + props.awayOBJAll.drawHTSER + " games");
             }
 
             final = null;
@@ -2876,7 +2883,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team To Score in First Half
-        chance = this.calcChance("sinFH", "cc_0_5_FH", 70);
+        chance = calcChance("sinFH", "cc_0_5_FH", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -2887,12 +2894,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in the first half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sinFHSER > 2) {
-                explanation.push(homeTeam + " scored in the first half in the last " + this.props.homeOBJHome.sinFHSER + " of their home games");
+            if (props.homeOBJHome.sinFHSER > 2) {
+                explanation.push(homeTeam + " scored in the first half in the last " + props.homeOBJHome.sinFHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sinFHSER > 2) {
-                explanation.push(homeTeam + " scored in the first half in the last " + this.props.homeOBJAll.sinFHSER + " games");
+            if (props.homeOBJAll.sinFHSER > 2) {
+                explanation.push(homeTeam + " scored in the first half in the last " + props.homeOBJAll.sinFHSER + " games");
             }
 
             explanation.push(awayTeam + " conceded over 0.5 goals in the first half in " + chance.a1_perc + "% of their away games");
@@ -2900,12 +2907,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded over 0.5 goals in the first half in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_0_5_FHSER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + this.props.awayOBJAway.cc_0_5_FHSER + " of their away games");
+            if (props.awayOBJAway.cc_0_5_FHSER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + props.awayOBJAway.cc_0_5_FHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_0_5_FHSER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + this.props.awayOBJAll.cc_0_5_FHSER + " games");
+            if (props.awayOBJAll.cc_0_5_FHSER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + props.awayOBJAll.cc_0_5_FHSER + " games");
             }
 
             final = null;
@@ -2930,12 +2937,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in the first half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sinFHSER > 2) {
-                explanation.push(homeTeam + " scored in the first half in the last " + this.props.homeOBJHome.sinFHSER + " of their home games");
+            if (props.homeOBJHome.sinFHSER > 2) {
+                explanation.push(homeTeam + " scored in the first half in the last " + props.homeOBJHome.sinFHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sinFHSER > 2) {
-                explanation.push(homeTeam + " scored in the first half in the last " + this.props.homeOBJAll.sinFHSER + " games");
+            if (props.homeOBJAll.sinFHSER > 2) {
+                explanation.push(homeTeam + " scored in the first half in the last " + props.homeOBJAll.sinFHSER + " games");
             }
 
             explanation.push(awayTeam + " conceded over 0.5 goals in the first half in " + chance.a1_perc + "% of their away games");
@@ -2943,12 +2950,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded over 0.5 goals in the first half in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_0_5_FHSER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + this.props.awayOBJAway.cc_0_5_FHSER + " of their away games");
+            if (props.awayOBJAway.cc_0_5_FHSER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + props.awayOBJAway.cc_0_5_FHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_0_5_FHSER > 2) {
-                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + this.props.awayOBJAll.cc_0_5_FHSER + " games");
+            if (props.awayOBJAll.cc_0_5_FHSER > 2) {
+                explanation.push(awayTeam + " conceded over 0.5 goals in the first half in the last " + props.awayOBJAll.cc_0_5_FHSER + " games");
             }
 
             final = null;
@@ -2966,7 +2973,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team To Score in First Half
-        chance = this.calcChance("cc_0_5_FH", "sinFH", 70);
+        chance = calcChance("cc_0_5_FH", "sinFH", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -2977,12 +2984,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded over 0.5 goals in the first half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_0_5_FHSER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + this.props.homeOBJHome.cc_0_5_FHSER + " of their home games");
+            if (props.homeOBJHome.cc_0_5_FHSER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + props.homeOBJHome.cc_0_5_FHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_0_5_FHSER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + this.props.homeOBJAll.cc_0_5_FHSER + " games");
+            if (props.homeOBJAll.cc_0_5_FHSER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + props.homeOBJAll.cc_0_5_FHSER + " games");
             }
 
             explanation.push(awayTeam + " scored in the first half in " + chance.a1_perc + "% of their away games");
@@ -2990,12 +2997,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in the first half in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sinFHSER > 2) {
-                explanation.push(awayTeam + " scored in the first half in the last " + this.props.awayOBJAway.sinFHSER + " of their away games");
+            if (props.awayOBJAway.sinFHSER > 2) {
+                explanation.push(awayTeam + " scored in the first half in the last " + props.awayOBJAway.sinFHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sinFHSER > 2) {
-                explanation.push(awayTeam + " scored in the first half in the last " + this.props.awayOBJAll.sinFHSER + " games");
+            if (props.awayOBJAll.sinFHSER > 2) {
+                explanation.push(awayTeam + " scored in the first half in the last " + props.awayOBJAll.sinFHSER + " games");
             }
 
             final = null;
@@ -3020,12 +3027,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded over 0.5 goals in the first half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_0_5_FHSER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + this.props.homeOBJHome.cc_0_5_FHSER + " of their home games");
+            if (props.homeOBJHome.cc_0_5_FHSER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + props.homeOBJHome.cc_0_5_FHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_0_5_FHSER > 2) {
-                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + this.props.homeOBJAll.cc_0_5_FHSER + " games");
+            if (props.homeOBJAll.cc_0_5_FHSER > 2) {
+                explanation.push(homeTeam + " conceded over 0.5 goals in the first half in the last " + props.homeOBJAll.cc_0_5_FHSER + " games");
             }
 
             explanation.push(awayTeam + " scored in the first half in " + chance.a1_perc + "% of their away games");
@@ -3033,12 +3040,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in the first half in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sinFHSER > 2) {
-                explanation.push(awayTeam + " scored in the first half in the last " + this.props.awayOBJAway.sinFHSER + " of their away games");
+            if (props.awayOBJAway.sinFHSER > 2) {
+                explanation.push(awayTeam + " scored in the first half in the last " + props.awayOBJAway.sinFHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sinFHSER > 2) {
-                explanation.push(awayTeam + " scored in the first half in the last " + this.props.awayOBJAll.sinFHSER + " games");
+            if (props.awayOBJAll.sinFHSER > 2) {
+                explanation.push(awayTeam + " scored in the first half in the last " + props.awayOBJAll.sinFHSER + " games");
             }
 
             final = null;
@@ -3056,7 +3063,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team To Score in second Half
-        chance = this.calcChance("sinSH", "cc_0_5_SH", 75);
+        chance = calcChance("sinSH", "cc_0_5_SH", 75);
         if (chance.total >= 75) {
             explanation.length = 0;
 
@@ -3067,12 +3074,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in the second half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sinSHSER > 2) {
-                explanation.push(homeTeam + " scored in the second half in the last " + this.props.homeOBJHome.sinSHSER + " of their home games");
+            if (props.homeOBJHome.sinSHSER > 2) {
+                explanation.push(homeTeam + " scored in the second half in the last " + props.homeOBJHome.sinSHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sinSHSER > 2) {
-                explanation.push(homeTeam + " scored in the second half in the last " + this.props.homeOBJAll.sinSHSER + " games");
+            if (props.homeOBJAll.sinSHSER > 2) {
+                explanation.push(homeTeam + " scored in the second half in the last " + props.homeOBJAll.sinSHSER + " games");
             }
 
             explanation.push(awayTeam + " conceded goal in the second half in " + chance.a1_perc + "% of their away games");
@@ -3080,12 +3087,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded goal in the second half in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_0_5_SHSER > 2) {
-                explanation.push(awayTeam + " conceded goal in the second half in the last " + this.props.awayOBJAway.cc_0_5_SHSER + " of their away games");
+            if (props.awayOBJAway.cc_0_5_SHSER > 2) {
+                explanation.push(awayTeam + " conceded goal in the second half in the last " + props.awayOBJAway.cc_0_5_SHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_0_5_SHSER > 2) {
-                explanation.push(awayTeam + " conceded goal in the second half in the last " + this.props.awayOBJAll.cc_0_5_SHSER + " games");
+            if (props.awayOBJAll.cc_0_5_SHSER > 2) {
+                explanation.push(awayTeam + " conceded goal in the second half in the last " + props.awayOBJAll.cc_0_5_SHSER + " games");
             }
 
             final = null;
@@ -3110,12 +3117,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in the second half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sinSHSER > 2) {
-                explanation.push(homeTeam + " scored in the second half in the last " + this.props.homeOBJHome.sinSHSER + " of their home games");
+            if (props.homeOBJHome.sinSHSER > 2) {
+                explanation.push(homeTeam + " scored in the second half in the last " + props.homeOBJHome.sinSHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sinSHSER > 2) {
-                explanation.push(homeTeam + " scored in the second half in the last " + this.props.homeOBJAll.sinSHSER + " games");
+            if (props.homeOBJAll.sinSHSER > 2) {
+                explanation.push(homeTeam + " scored in the second half in the last " + props.homeOBJAll.sinSHSER + " games");
             }
 
             explanation.push(awayTeam + " conceded goal in the second half in " + chance.a1_perc + "% of their away games");
@@ -3123,12 +3130,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded goal in the second half in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_0_5_SHSER > 2) {
-                explanation.push(awayTeam + " conceded goal in the second half in the last " + this.props.awayOBJAway.cc_0_5_SHSER + " of their away games");
+            if (props.awayOBJAway.cc_0_5_SHSER > 2) {
+                explanation.push(awayTeam + " conceded goal in the second half in the last " + props.awayOBJAway.cc_0_5_SHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_0_5_SHSER > 2) {
-                explanation.push(awayTeam + " conceded goal in the second half in the last " + this.props.awayOBJAll.cc_0_5_SHSER + " games");
+            if (props.awayOBJAll.cc_0_5_SHSER > 2) {
+                explanation.push(awayTeam + " conceded goal in the second half in the last " + props.awayOBJAll.cc_0_5_SHSER + " games");
             }
 
             final = null;
@@ -3146,7 +3153,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team To Score in second Half
-        chance = this.calcChance("cc_0_5_SH", "sinSH", 75);
+        chance = calcChance("cc_0_5_SH", "sinSH", 75);
         if (chance.total >= 75) {
             explanation.length = 0;
 
@@ -3157,12 +3164,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded goal in the second half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_0_5_SHSER > 2) {
-                explanation.push(homeTeam + " conceded goal in the second half in the last " + this.props.homeOBJHome.cc_0_5_SHSER + " of their home games");
+            if (props.homeOBJHome.cc_0_5_SHSER > 2) {
+                explanation.push(homeTeam + " conceded goal in the second half in the last " + props.homeOBJHome.cc_0_5_SHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_0_5_SHSER > 2) {
-                explanation.push(homeTeam + " conceded goal in the second half in the last " + this.props.homeOBJAll.cc_0_5_SHSER + " games");
+            if (props.homeOBJAll.cc_0_5_SHSER > 2) {
+                explanation.push(homeTeam + " conceded goal in the second half in the last " + props.homeOBJAll.cc_0_5_SHSER + " games");
             }
 
             explanation.push(awayTeam + " scored in the second half in " + chance.a1_perc + "% of their away games");
@@ -3170,12 +3177,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in the second half in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sinSHSER > 2) {
-                explanation.push(awayTeam + " scored in the second half in the last " + this.props.awayOBJAway.sinSHSER + " of their away games");
+            if (props.awayOBJAway.sinSHSER > 2) {
+                explanation.push(awayTeam + " scored in the second half in the last " + props.awayOBJAway.sinSHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sinSHSER > 2) {
-                explanation.push(awayTeam + " scored in the second half in the last " + this.props.awayOBJAll.sinSHSER + " games");
+            if (props.awayOBJAll.sinSHSER > 2) {
+                explanation.push(awayTeam + " scored in the second half in the last " + props.awayOBJAll.sinSHSER + " games");
             }
 
             final = null;
@@ -3200,12 +3207,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded goal in the second half in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_0_5_SHSER > 2) {
-                explanation.push(homeTeam + " conceded goal in the second half in the last " + this.props.homeOBJHome.cc_0_5_SHSER + " of their home games");
+            if (props.homeOBJHome.cc_0_5_SHSER > 2) {
+                explanation.push(homeTeam + " conceded goal in the second half in the last " + props.homeOBJHome.cc_0_5_SHSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_0_5_SHSER > 2) {
-                explanation.push(homeTeam + " conceded goal in the second half in the last " + this.props.homeOBJAll.cc_0_5_SHSER + " games");
+            if (props.homeOBJAll.cc_0_5_SHSER > 2) {
+                explanation.push(homeTeam + " conceded goal in the second half in the last " + props.homeOBJAll.cc_0_5_SHSER + " games");
             }
 
             explanation.push(awayTeam + " scored in the second half in " + chance.a1_perc + "% of their away games");
@@ -3213,12 +3220,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in the second half in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sinSHSER > 2) {
-                explanation.push(awayTeam + " scored in the second half in the last " + this.props.awayOBJAway.sinSHSER + " of their away games");
+            if (props.awayOBJAway.sinSHSER > 2) {
+                explanation.push(awayTeam + " scored in the second half in the last " + props.awayOBJAway.sinSHSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sinSHSER > 2) {
-                explanation.push(awayTeam + " scored in the second half in the last " + this.props.awayOBJAll.sinSHSER + " games");
+            if (props.awayOBJAll.sinSHSER > 2) {
+                explanation.push(awayTeam + " scored in the second half in the last " + props.awayOBJAll.sinSHSER + " games");
             }
 
             final = null;
@@ -3236,7 +3243,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team to Score in Both Halves
-        chance = this.calcChance("sibh", "cc_sibh", 55);
+        chance = calcChance("sibh", "cc_sibh", 55);
         if (chance.total >= 55) {
             explanation.length = 0;
 
@@ -3247,12 +3254,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in both halves in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sibhSER > 2) {
-                explanation.push(homeTeam + " scored in both halves in the last " + this.props.homeOBJHome.sibhSER + " of their home games");
+            if (props.homeOBJHome.sibhSER > 2) {
+                explanation.push(homeTeam + " scored in both halves in the last " + props.homeOBJHome.sibhSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sibhSER > 2) {
-                explanation.push(homeTeam + " scored in both halves in the last " + this.props.homeOBJAll.sibhSER + " games");
+            if (props.homeOBJAll.sibhSER > 2) {
+                explanation.push(homeTeam + " scored in both halves in the last " + props.homeOBJAll.sibhSER + " games");
             }
 
             explanation.push(awayTeam + " conceded in both halves in " + chance.a1_perc + "% of their away games");
@@ -3260,12 +3267,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded in both halves in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_sibhSER > 2) {
-                explanation.push(awayTeam + " conceded in both halves in the last " + this.props.awayOBJAway.cc_sibhSER + " of their away games");
+            if (props.awayOBJAway.cc_sibhSER > 2) {
+                explanation.push(awayTeam + " conceded in both halves in the last " + props.awayOBJAway.cc_sibhSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_sibhSER > 2) {
-                explanation.push(awayTeam + " conceded in both halves in the last " + this.props.awayOBJAll.cc_sibhSER + " games");
+            if (props.awayOBJAll.cc_sibhSER > 2) {
+                explanation.push(awayTeam + " conceded in both halves in the last " + props.awayOBJAll.cc_sibhSER + " games");
             }
 
             final = null;
@@ -3290,12 +3297,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " scored in both halves in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.sibhSER > 2) {
-                explanation.push(homeTeam + " scored in both halves in the last " + this.props.homeOBJHome.sibhSER + " of their home games");
+            if (props.homeOBJHome.sibhSER > 2) {
+                explanation.push(homeTeam + " scored in both halves in the last " + props.homeOBJHome.sibhSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.sibhSER > 2) {
-                explanation.push(homeTeam + " scored in both halves in the last " + this.props.homeOBJAll.sibhSER + " games");
+            if (props.homeOBJAll.sibhSER > 2) {
+                explanation.push(homeTeam + " scored in both halves in the last " + props.homeOBJAll.sibhSER + " games");
             }
 
             explanation.push(awayTeam + " conceded in both halves in " + chance.a1_perc + "% of their away games");
@@ -3303,12 +3310,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " conceded in both halves in " + chance.a2_perc + "% games");
             }
 
-            if (this.props.awayOBJAway.cc_sibhSER > 2) {
-                explanation.push(awayTeam + " conceded in both halves in the last " + this.props.awayOBJAway.cc_sibhSER + " of their away games");
+            if (props.awayOBJAway.cc_sibhSER > 2) {
+                explanation.push(awayTeam + " conceded in both halves in the last " + props.awayOBJAway.cc_sibhSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.cc_sibhSER > 2) {
-                explanation.push(awayTeam + " conceded in both halves in the last " + this.props.awayOBJAll.cc_sibhSER + " games");
+            if (props.awayOBJAll.cc_sibhSER > 2) {
+                explanation.push(awayTeam + " conceded in both halves in the last " + props.awayOBJAll.cc_sibhSER + " games");
             }
 
             final = null;
@@ -3326,7 +3333,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team to Score in Both Halves
-        chance = this.calcChance("cc_sibh", "sibh", 55);
+        chance = calcChance("cc_sibh", "sibh", 55);
         if (chance.total >= 55) {
             explanation.length = 0;
 
@@ -3337,12 +3344,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded in both halves in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_sibhSER > 2) {
-                explanation.push(homeTeam + " conceded in both halves in the last " + this.props.homeOBJHome.cc_sibhSER + " of their home games");
+            if (props.homeOBJHome.cc_sibhSER > 2) {
+                explanation.push(homeTeam + " conceded in both halves in the last " + props.homeOBJHome.cc_sibhSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_sibhSER > 2) {
-                explanation.push(homeTeam + " conceded in both halves in the last " + this.props.homeOBJAll.cc_sibhSER + " games");
+            if (props.homeOBJAll.cc_sibhSER > 2) {
+                explanation.push(homeTeam + " conceded in both halves in the last " + props.homeOBJAll.cc_sibhSER + " games");
             }
 
             explanation.push(awayTeam + " scored in both halves in " + chance.a1_perc + "% of their away games");
@@ -3350,12 +3357,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in both halves in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sibhSER > 2) {
-                explanation.push(awayTeam + " scored in both halves in the last " + this.props.awayOBJAway.sibhSER + " of their away games");
+            if (props.awayOBJAway.sibhSER > 2) {
+                explanation.push(awayTeam + " scored in both halves in the last " + props.awayOBJAway.sibhSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sibhSER > 2) {
-                explanation.push(awayTeam + " scored in both halves in the last " + this.props.awayOBJAll.sibhSER + " games");
+            if (props.awayOBJAll.sibhSER > 2) {
+                explanation.push(awayTeam + " scored in both halves in the last " + props.awayOBJAll.sibhSER + " games");
             }
 
             final = null;
@@ -3380,12 +3387,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " conceded in both halves in " + chance.h2_perc + "% of all the games");
             }
 
-            if (this.props.homeOBJHome.cc_sibhSER > 2) {
-                explanation.push(homeTeam + " conceded in both halves in the last " + this.props.homeOBJHome.cc_sibhSER + " of their home games");
+            if (props.homeOBJHome.cc_sibhSER > 2) {
+                explanation.push(homeTeam + " conceded in both halves in the last " + props.homeOBJHome.cc_sibhSER + " of their home games");
             }
 
-            if (this.props.homeOBJAll.cc_sibhSER > 2) {
-                explanation.push(homeTeam + " conceded in both halves in the last " + this.props.homeOBJAll.cc_sibhSER + " games");
+            if (props.homeOBJAll.cc_sibhSER > 2) {
+                explanation.push(homeTeam + " conceded in both halves in the last " + props.homeOBJAll.cc_sibhSER + " games");
             }
 
             explanation.push(awayTeam + " scored in both halves in " + chance.a1_perc + "% of their away games");
@@ -3393,12 +3400,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " scored in both halves in " + chance.a2_perc + "% of all the games");
             }
 
-            if (this.props.awayOBJAway.sibhSER > 2) {
-                explanation.push(awayTeam + " scored in both halves in the last " + this.props.awayOBJAway.sibhSER + " of their away games");
+            if (props.awayOBJAway.sibhSER > 2) {
+                explanation.push(awayTeam + " scored in both halves in the last " + props.awayOBJAway.sibhSER + " of their away games");
             }
 
-            if (this.props.awayOBJAll.sibhSER > 2) {
-                explanation.push(awayTeam + " scored in both halves in the last " + this.props.awayOBJAll.sibhSER + " games");
+            if (props.awayOBJAll.sibhSER > 2) {
+                explanation.push(awayTeam + " scored in both halves in the last " + props.awayOBJAll.sibhSER + " games");
             }
 
             final = null;
@@ -3415,7 +3422,7 @@ class SingleBettingBox extends Component {
         }
 
         // Goal in Both Halves
-        chance = this.calcChance("gibh", "gibh", 70);
+        chance = calcChance("gibh", "gibh", 70);
         if (chance.total >= 70) {
             explanation.length = 0;
 
@@ -3426,12 +3433,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Goal in both halves have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.homeOBJHome.gibhSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.homeOBJHome.gibhSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.homeOBJAll.gibhSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.homeOBJAll.gibhSER + " of " + homeTeam + " games");
             }
 
             explanation.push("Goal in both halves have been scored in " + chance.a1_perc + "% of " + awayTeam + " away games");
@@ -3439,12 +3446,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Goal in both halves have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.awayOBJAway.gibhSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.awayOBJAway.gibhSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.awayOBJAll.gibhSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.awayOBJAll.gibhSER + " of " + awayTeam + " games");
             }
 
 
@@ -3470,12 +3477,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Goal in both halves have been scored in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.homeOBJHome.gibhSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.homeOBJHome.gibhSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.homeOBJAll.gibhSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.homeOBJAll.gibhSER + " of " + homeTeam + " games");
             }
 
             explanation.push("Goal in both halves have been scored in " + chance.a1_perc + "% of " + awayTeam + " home games");
@@ -3483,12 +3490,12 @@ class SingleBettingBox extends Component {
                 explanation.push("Goal in both halves have been scored in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.awayOBJAway.gibhSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.awayOBJAway.gibhSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.gibhSER > 2) {
-                explanation.push("Goal in both halves have been scored in the last " + this.props.awayOBJAll.gibhSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.gibhSER > 2) {
+                explanation.push("Goal in both halves have been scored in the last " + props.awayOBJAll.gibhSER + " of " + awayTeam + " games");
             }
 
 
@@ -3507,7 +3514,7 @@ class SingleBettingBox extends Component {
 
 
         // More Goals First Half
-        chance = this.calcChance("more_FH", "more_FH", 55);
+        chance = calcChance("more_FH", "more_FH", 55);
         if (chance.total >= 55) {
             explanation.length = 0;
 
@@ -3518,12 +3525,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the first half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.homeOBJHome.more_FHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.homeOBJHome.more_FHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.homeOBJAll.more_FHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.homeOBJAll.more_FHSER + " of " + homeTeam + " games");
             }
 
 
@@ -3532,12 +3539,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the first half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.awayOBJAway.more_FHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.awayOBJAway.more_FHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.awayOBJAll.more_FHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.awayOBJAll.more_FHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -3562,12 +3569,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the first half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.homeOBJHome.more_FHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.homeOBJHome.more_FHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.homeOBJAll.more_FHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.homeOBJAll.more_FHSER + " of " + homeTeam + " games");
             }
 
 
@@ -3576,12 +3583,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the first half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.awayOBJAway.more_FHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.awayOBJAway.more_FHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.more_FHSER > 2) {
-                explanation.push("More goals have been scored in the first half in the last " + this.props.awayOBJAll.more_FHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.more_FHSER > 2) {
+                explanation.push("More goals have been scored in the first half in the last " + props.awayOBJAll.more_FHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -3599,7 +3606,7 @@ class SingleBettingBox extends Component {
 
 
         // More Goals Second Half
-        chance = this.calcChance("more_SH", "more_SH", 65);
+        chance = calcChance("more_SH", "more_SH", 65);
         if (chance.total >= 65) {
             explanation.length = 0;
 
@@ -3610,12 +3617,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the second half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.homeOBJHome.more_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.homeOBJHome.more_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.homeOBJAll.more_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.homeOBJAll.more_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -3624,12 +3631,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the second half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.awayOBJAway.more_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.awayOBJAway.more_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.awayOBJAll.more_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.awayOBJAll.more_SHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -3654,12 +3661,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the second half in " + chance.h2_perc + "% of " + homeTeam + " games");
             }
 
-            if (this.props.homeOBJHome.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.homeOBJHome.more_SHSER + " of " + homeTeam + " home games");
+            if (props.homeOBJHome.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.homeOBJHome.more_SHSER + " of " + homeTeam + " home games");
             }
 
-            if (this.props.homeOBJAll.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.homeOBJAll.more_SHSER + " of " + homeTeam + " games");
+            if (props.homeOBJAll.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.homeOBJAll.more_SHSER + " of " + homeTeam + " games");
             }
 
 
@@ -3668,12 +3675,12 @@ class SingleBettingBox extends Component {
                 explanation.push("More goals have been scored in the second half in " + chance.a2_perc + "% of " + awayTeam + " games");
             }
 
-            if (this.props.awayOBJAway.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.awayOBJAway.more_SHSER + " of " + awayTeam + " away games");
+            if (props.awayOBJAway.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.awayOBJAway.more_SHSER + " of " + awayTeam + " away games");
             }
 
-            if (this.props.awayOBJAll.more_SHSER > 2) {
-                explanation.push("More goals have been scored in the second half in the last " + this.props.awayOBJAll.more_SHSER + " of " + awayTeam + " games");
+            if (props.awayOBJAll.more_SHSER > 2) {
+                explanation.push("More goals have been scored in the second half in the last " + props.awayOBJAll.more_SHSER + " of " + awayTeam + " games");
             }
 
             final = null;
@@ -3691,7 +3698,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team Win HT and Win FT
-        chance = this.calcChance("home_home", "away_away", 58);
+        chance = calcChance("home_home", "away_away", 58);
         if (chance.total >= 58) {
             explanation.length = 0;
 
@@ -3702,12 +3709,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won both half-time and full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.home_homeSER > 2) {
-                explanation.push(homeTeam + " won both half-time and full-time in the last " + this.props.homeOBJHome.home_homeSER + " home games");
+            if (props.homeOBJHome.home_homeSER > 2) {
+                explanation.push(homeTeam + " won both half-time and full-time in the last " + props.homeOBJHome.home_homeSER + " home games");
             }
 
-            if (this.props.homeOBJAll.home_homeSER > 2) {
-                explanation.push(homeTeam + " won both half-time and full-time in the last " + this.props.homeOBJAll.home_homeSER + " games");
+            if (props.homeOBJAll.home_homeSER > 2) {
+                explanation.push(homeTeam + " won both half-time and full-time in the last " + props.homeOBJAll.home_homeSER + " games");
             }
 
 
@@ -3716,12 +3723,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost both half-time and full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.away_awaySER > 2) {
-                explanation.push(awayTeam + " lost both half-time and full-time in the last " + this.props.awayOBJAway.away_awaySER + " away games");
+            if (props.awayOBJAway.away_awaySER > 2) {
+                explanation.push(awayTeam + " lost both half-time and full-time in the last " + props.awayOBJAway.away_awaySER + " away games");
             }
 
-            if (this.props.awayOBJAll.away_awaySER > 2) {
-                explanation.push(awayTeam + " lost both half-time and full-time in the last " + this.props.awayOBJAll.away_awaySER + " games");
+            if (props.awayOBJAll.away_awaySER > 2) {
+                explanation.push(awayTeam + " lost both half-time and full-time in the last " + props.awayOBJAll.away_awaySER + " games");
             }
 
             final = null;
@@ -3746,12 +3753,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won both half-time and full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.home_homeSER > 2) {
-                explanation.push(homeTeam + " won both half-time and full-time in the last " + this.props.homeOBJHome.home_homeSER + " home games");
+            if (props.homeOBJHome.home_homeSER > 2) {
+                explanation.push(homeTeam + " won both half-time and full-time in the last " + props.homeOBJHome.home_homeSER + " home games");
             }
 
-            if (this.props.homeOBJAll.home_homeSER > 2) {
-                explanation.push(homeTeam + " won both half-time and full-time in the last " + this.props.homeOBJAll.home_homeSER + " games");
+            if (props.homeOBJAll.home_homeSER > 2) {
+                explanation.push(homeTeam + " won both half-time and full-time in the last " + props.homeOBJAll.home_homeSER + " games");
             }
 
 
@@ -3760,12 +3767,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost both half-time and full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.away_awaySER > 2) {
-                explanation.push(awayTeam + " lost both half-time and full-time in the last " + this.props.awayOBJAway.away_awaySER + " away games");
+            if (props.awayOBJAway.away_awaySER > 2) {
+                explanation.push(awayTeam + " lost both half-time and full-time in the last " + props.awayOBJAway.away_awaySER + " away games");
             }
 
-            if (this.props.awayOBJAll.away_awaySER > 2) {
-                explanation.push(awayTeam + " lost both half-time and full-time in the last " + this.props.awayOBJAll.away_awaySER + " games");
+            if (props.awayOBJAll.away_awaySER > 2) {
+                explanation.push(awayTeam + " lost both half-time and full-time in the last " + props.awayOBJAll.away_awaySER + " games");
             }
 
             final = null;
@@ -3783,7 +3790,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team Win HT and Draw FT
-        chance = this.calcChance("home_draw", "away_draw", 20);
+        chance = calcChance("home_draw", "away_draw", 20);
         if (chance.total >= 20) {
             explanation.length = 0;
 
@@ -3794,12 +3801,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won half-time and played a draw full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.home_drawSER > 2) {
-                explanation.push(homeTeam + " won half-time and played a draw full-time in the last " + this.props.homeOBJHome.home_drawSER + " home games");
+            if (props.homeOBJHome.home_drawSER > 2) {
+                explanation.push(homeTeam + " won half-time and played a draw full-time in the last " + props.homeOBJHome.home_drawSER + " home games");
             }
 
-            if (this.props.homeOBJAll.home_drawSER > 2) {
-                explanation.push(homeTeam + " won half-time and played a draw full-time in the last " + this.props.homeOBJAll.home_drawSER + " games");
+            if (props.homeOBJAll.home_drawSER > 2) {
+                explanation.push(homeTeam + " won half-time and played a draw full-time in the last " + props.homeOBJAll.home_drawSER + " games");
             }
 
 
@@ -3808,12 +3815,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost half-time and played a draw full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.away_drawSER > 2) {
-                explanation.push(awayTeam + " lost half-time and played a draw full-time in the last " + this.props.awayOBJAway.away_drawSER + " away games");
+            if (props.awayOBJAway.away_drawSER > 2) {
+                explanation.push(awayTeam + " lost half-time and played a draw full-time in the last " + props.awayOBJAway.away_drawSER + " away games");
             }
 
-            if (this.props.awayOBJAll.away_drawSER > 2) {
-                explanation.push(awayTeam + " lost half-time and played a draw full-time in the last " + this.props.awayOBJAll.away_drawSER + " games");
+            if (props.awayOBJAll.away_drawSER > 2) {
+                explanation.push(awayTeam + " lost half-time and played a draw full-time in the last " + props.awayOBJAll.away_drawSER + " games");
             }
 
             final = null;
@@ -3831,7 +3838,7 @@ class SingleBettingBox extends Component {
 
 
         // Home Team Win HT and Lose FT
-        chance = this.calcChance("home_away", "away_home", 10);
+        chance = calcChance("home_away", "away_home", 10);
         if (chance.total >= 10) {
             explanation.length = 0;
 
@@ -3842,12 +3849,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " won half-time and lost full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.home_awaySER > 2) {
-                explanation.push(homeTeam + " won half-time and lost full-time in the last " + this.props.homeOBJHome.home_awaySER + " home games");
+            if (props.homeOBJHome.home_awaySER > 2) {
+                explanation.push(homeTeam + " won half-time and lost full-time in the last " + props.homeOBJHome.home_awaySER + " home games");
             }
 
-            if (this.props.homeOBJAll.home_awaySER > 2) {
-                explanation.push(homeTeam + " won half-time and lost full-time in the last " + this.props.homeOBJAll.home_awaySER + " games");
+            if (props.homeOBJAll.home_awaySER > 2) {
+                explanation.push(homeTeam + " won half-time and lost full-time in the last " + props.homeOBJAll.home_awaySER + " games");
             }
 
 
@@ -3856,12 +3863,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " lost half-time and won full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.away_homeSER > 2) {
-                explanation.push(awayTeam + " lost half-time and won full-time in the last " + this.props.awayOBJAway.away_homeSER + " away games");
+            if (props.awayOBJAway.away_homeSER > 2) {
+                explanation.push(awayTeam + " lost half-time and won full-time in the last " + props.awayOBJAway.away_homeSER + " away games");
             }
 
-            if (this.props.awayOBJAll.away_homeSER > 2) {
-                explanation.push(awayTeam + " lost half-time and won full-time in the last " + this.props.awayOBJAll.away_homeSER + " games");
+            if (props.awayOBJAll.away_homeSER > 2) {
+                explanation.push(awayTeam + " lost half-time and won full-time in the last " + props.awayOBJAll.away_homeSER + " games");
             }
 
             final = null;
@@ -3880,7 +3887,7 @@ class SingleBettingBox extends Component {
 
 
         // Draw HT and home win FT
-        chance = this.calcChance("draw_home", "draw_away", 45);
+        chance = calcChance("draw_home", "draw_away", 45);
         if (chance.total >= 45) {
             explanation.length = 0;
 
@@ -3891,12 +3898,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " played a draw half-time and won full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.draw_homeSER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + this.props.homeOBJHome.draw_homeSER + " home games");
+            if (props.homeOBJHome.draw_homeSER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + props.homeOBJHome.draw_homeSER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw_homeSER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + this.props.homeOBJAll.draw_homeSER + " games");
+            if (props.homeOBJAll.draw_homeSER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + props.homeOBJAll.draw_homeSER + " games");
             }
 
 
@@ -3905,12 +3912,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " played a draw half-time and lost full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.draw_awaySER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + this.props.awayOBJAway.draw_awaySER + " away games");
+            if (props.awayOBJAway.draw_awaySER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + props.awayOBJAway.draw_awaySER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw_awaySER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + this.props.awayOBJAll.draw_awaySER + " games");
+            if (props.awayOBJAll.draw_awaySER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + props.awayOBJAll.draw_awaySER + " games");
             }
 
             final = null;
@@ -3935,12 +3942,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " played a draw half-time and won full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.draw_homeSER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + this.props.homeOBJHome.draw_homeSER + " home games");
+            if (props.homeOBJHome.draw_homeSER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + props.homeOBJHome.draw_homeSER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw_homeSER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + this.props.homeOBJAll.draw_homeSER + " games");
+            if (props.homeOBJAll.draw_homeSER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and won full-time in the last " + props.homeOBJAll.draw_homeSER + " games");
             }
 
 
@@ -3949,12 +3956,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " played a draw half-time and lost full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.draw_awaySER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + this.props.awayOBJAway.draw_awaySER + " away games");
+            if (props.awayOBJAway.draw_awaySER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + props.awayOBJAway.draw_awaySER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw_awaySER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + this.props.awayOBJAll.draw_awaySER + " games");
+            if (props.awayOBJAll.draw_awaySER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and lost full-time in the last " + props.awayOBJAll.draw_awaySER + " games");
             }
 
             final = null;
@@ -3974,7 +3981,7 @@ class SingleBettingBox extends Component {
 
 
         // Draw HT and away win FT
-        chance = this.calcChance("draw_away", "draw_home", 45);
+        chance = calcChance("draw_away", "draw_home", 45);
         if (chance.total >= 45) {
             explanation.length = 0;
 
@@ -3985,12 +3992,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " played a draw half-time and lost full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.draw_awaySER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + this.props.homeOBJHome.draw_awaySER + " home games");
+            if (props.homeOBJHome.draw_awaySER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + props.homeOBJHome.draw_awaySER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw_awaySER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + this.props.homeOBJAll.draw_awaySER + " games");
+            if (props.homeOBJAll.draw_awaySER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + props.homeOBJAll.draw_awaySER + " games");
             }
 
 
@@ -3999,12 +4006,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " played a draw half-time and won full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.draw_homeSER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + this.props.awayOBJAway.draw_homeSER + " away games");
+            if (props.awayOBJAway.draw_homeSER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + props.awayOBJAway.draw_homeSER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw_homeSER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + this.props.awayOBJAll.draw_homeSER + " games");
+            if (props.awayOBJAll.draw_homeSER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + props.awayOBJAll.draw_homeSER + " games");
             }
 
             final = null;
@@ -4029,12 +4036,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " played a draw half-time and lost full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.draw_awaySER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + this.props.homeOBJHome.draw_awaySER + " home games");
+            if (props.homeOBJHome.draw_awaySER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + props.homeOBJHome.draw_awaySER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw_awaySER > 2) {
-                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + this.props.homeOBJAll.draw_awaySER + " games");
+            if (props.homeOBJAll.draw_awaySER > 2) {
+                explanation.push(homeTeam + " played a draw half-time and lost full-time in the last " + props.homeOBJAll.draw_awaySER + " games");
             }
 
 
@@ -4043,12 +4050,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " played a draw half-time and won full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.draw_homeSER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + this.props.awayOBJAway.draw_homeSER + " away games");
+            if (props.awayOBJAway.draw_homeSER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + props.awayOBJAway.draw_homeSER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw_homeSER > 2) {
-                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + this.props.awayOBJAll.draw_homeSER + " games");
+            if (props.awayOBJAll.draw_homeSER > 2) {
+                explanation.push(awayTeam + " played a draw half-time and won full-time in the last " + props.awayOBJAll.draw_homeSER + " games");
             }
 
             final = null;
@@ -4066,7 +4073,7 @@ class SingleBettingBox extends Component {
 
 
         // Draw HT and Draw FT
-        chance = this.calcChance("draw_draw", "draw_draw", 30);
+        chance = calcChance("draw_draw", "draw_draw", 30);
         if (chance.total >= 30) {
             explanation.length = 0;
 
@@ -4077,12 +4084,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " played a draw both half-time and full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.draw_drawSER > 2) {
-                explanation.push(homeTeam + " played a draw both half-time and full-time in the last " + this.props.homeOBJHome.draw_drawSER + " home games");
+            if (props.homeOBJHome.draw_drawSER > 2) {
+                explanation.push(homeTeam + " played a draw both half-time and full-time in the last " + props.homeOBJHome.draw_drawSER + " home games");
             }
 
-            if (this.props.homeOBJAll.draw_drawSER > 2) {
-                explanation.push(homeTeam + " played a draw both half-time and full-time in the last " + this.props.homeOBJAll.draw_drawSER + " games");
+            if (props.homeOBJAll.draw_drawSER > 2) {
+                explanation.push(homeTeam + " played a draw both half-time and full-time in the last " + props.homeOBJAll.draw_drawSER + " games");
             }
 
 
@@ -4091,12 +4098,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " played a draw both half-time and full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.draw_drawSER > 2) {
-                explanation.push(awayTeam + " played a draw both half-time and full-time in the last " + this.props.awayOBJAway.draw_drawSER + " away games");
+            if (props.awayOBJAway.draw_drawSER > 2) {
+                explanation.push(awayTeam + " played a draw both half-time and full-time in the last " + props.awayOBJAway.draw_drawSER + " away games");
             }
 
-            if (this.props.awayOBJAll.draw_drawSER > 2) {
-                explanation.push(awayTeam + " played a draw both half-time and full-time in the last " + this.props.awayOBJAll.draw_drawSER + " games");
+            if (props.awayOBJAll.draw_drawSER > 2) {
+                explanation.push(awayTeam + " played a draw both half-time and full-time in the last " + props.awayOBJAll.draw_drawSER + " games");
             }
 
             final = null;
@@ -4115,7 +4122,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team Win HT and Win FT
-        chance = this.calcChance("away_away", "home_home", 58);
+        chance = calcChance("away_away", "home_home", 58);
         if (chance.total >= 58) {
             explanation.length = 0;
 
@@ -4126,12 +4133,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost both half-time and full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.away_awaySER > 2) {
-                explanation.push(homeTeam + " lost both half-time and full-time in the last " + this.props.homeOBJHome.away_awaySER + " home games");
+            if (props.homeOBJHome.away_awaySER > 2) {
+                explanation.push(homeTeam + " lost both half-time and full-time in the last " + props.homeOBJHome.away_awaySER + " home games");
             }
 
-            if (this.props.homeOBJAll.away_awaySER > 2) {
-                explanation.push(homeTeam + " lost both half-time and full-time in the last " + this.props.homeOBJAll.away_awaySER + " games");
+            if (props.homeOBJAll.away_awaySER > 2) {
+                explanation.push(homeTeam + " lost both half-time and full-time in the last " + props.homeOBJAll.away_awaySER + " games");
             }
 
 
@@ -4140,12 +4147,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won both half-time and full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.home_homeSER > 2) {
-                explanation.push(awayTeam + " won both half-time and full-time in the last " + this.props.awayOBJAway.home_homeSER + " away games");
+            if (props.awayOBJAway.home_homeSER > 2) {
+                explanation.push(awayTeam + " won both half-time and full-time in the last " + props.awayOBJAway.home_homeSER + " away games");
             }
 
-            if (this.props.awayOBJAll.home_homeSER > 2) {
-                explanation.push(awayTeam + " won both half-time and full-time in the last " + this.props.awayOBJAll.home_homeSER + " games");
+            if (props.awayOBJAll.home_homeSER > 2) {
+                explanation.push(awayTeam + " won both half-time and full-time in the last " + props.awayOBJAll.home_homeSER + " games");
             }
 
             final = null;
@@ -4170,12 +4177,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost both half-time and full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.away_awaySER > 2) {
-                explanation.push(homeTeam + " lost both half-time and full-time in the last " + this.props.homeOBJHome.away_awaySER + " home games");
+            if (props.homeOBJHome.away_awaySER > 2) {
+                explanation.push(homeTeam + " lost both half-time and full-time in the last " + props.homeOBJHome.away_awaySER + " home games");
             }
 
-            if (this.props.homeOBJAll.away_awaySER > 2) {
-                explanation.push(homeTeam + " lost both half-time and full-time in the last " + this.props.homeOBJAll.away_awaySER + " games");
+            if (props.homeOBJAll.away_awaySER > 2) {
+                explanation.push(homeTeam + " lost both half-time and full-time in the last " + props.homeOBJAll.away_awaySER + " games");
             }
 
 
@@ -4184,12 +4191,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won both half-time and full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.home_homeSER > 2) {
-                explanation.push(awayTeam + " won both half-time and full-time in the last " + this.props.awayOBJAway.home_homeSER + " away games");
+            if (props.awayOBJAway.home_homeSER > 2) {
+                explanation.push(awayTeam + " won both half-time and full-time in the last " + props.awayOBJAway.home_homeSER + " away games");
             }
 
-            if (this.props.awayOBJAll.home_homeSER > 2) {
-                explanation.push(awayTeam + " won both half-time and full-time in the last " + this.props.awayOBJAll.home_homeSER + " games");
+            if (props.awayOBJAll.home_homeSER > 2) {
+                explanation.push(awayTeam + " won both half-time and full-time in the last " + props.awayOBJAll.home_homeSER + " games");
             }
 
             final = null;
@@ -4207,7 +4214,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team Win HT and Draw FT
-        chance = this.calcChance("away_draw", "home_draw", 20);
+        chance = calcChance("away_draw", "home_draw", 20);
         if (chance.total >= 20) {
             explanation.length = 0;
 
@@ -4218,12 +4225,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost half-time and played a draw full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.away_drawSER > 2) {
-                explanation.push(homeTeam + " lost half-time and played a draw full-time in the last " + this.props.homeOBJHome.away_drawSER + " home games");
+            if (props.homeOBJHome.away_drawSER > 2) {
+                explanation.push(homeTeam + " lost half-time and played a draw full-time in the last " + props.homeOBJHome.away_drawSER + " home games");
             }
 
-            if (this.props.homeOBJAll.away_drawSER > 2) {
-                explanation.push(homeTeam + " lost half-time and played a draw full-time in the last " + this.props.homeOBJAll.away_drawSER + " games");
+            if (props.homeOBJAll.away_drawSER > 2) {
+                explanation.push(homeTeam + " lost half-time and played a draw full-time in the last " + props.homeOBJAll.away_drawSER + " games");
             }
 
 
@@ -4232,12 +4239,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won half-time and played a draw full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.home_drawSER > 2) {
-                explanation.push(awayTeam + " won half-time and played a draw full-time in the last " + this.props.awayOBJAway.home_drawSER + " away games");
+            if (props.awayOBJAway.home_drawSER > 2) {
+                explanation.push(awayTeam + " won half-time and played a draw full-time in the last " + props.awayOBJAway.home_drawSER + " away games");
             }
 
-            if (this.props.awayOBJAll.home_drawSER > 2) {
-                explanation.push(awayTeam + " won half-time and played a draw full-time in the last " + this.props.awayOBJAll.home_drawSER + " games");
+            if (props.awayOBJAll.home_drawSER > 2) {
+                explanation.push(awayTeam + " won half-time and played a draw full-time in the last " + props.awayOBJAll.home_drawSER + " games");
             }
 
             final = null;
@@ -4257,7 +4264,7 @@ class SingleBettingBox extends Component {
 
 
         // Away Team Win HT and Lose FT
-        chance = this.calcChance("away_home", "home_away", 10);
+        chance = calcChance("away_home", "home_away", 10);
         if (chance.total >= 10) {
             explanation.length = 0;
 
@@ -4268,12 +4275,12 @@ class SingleBettingBox extends Component {
                 explanation.push(homeTeam + " lost half-time and won full-time in " + chance.h2_perc + "% of their games");
             }
 
-            if (this.props.homeOBJHome.away_homeSER > 2) {
-                explanation.push(homeTeam + " lost half-time and won full-time in the last " + this.props.homeOBJHome.away_homeSER + " home games");
+            if (props.homeOBJHome.away_homeSER > 2) {
+                explanation.push(homeTeam + " lost half-time and won full-time in the last " + props.homeOBJHome.away_homeSER + " home games");
             }
 
-            if (this.props.homeOBJAll.away_homeSER > 2) {
-                explanation.push(homeTeam + " lost half-time and won full-time in the last " + this.props.homeOBJAll.away_homeSER + " games");
+            if (props.homeOBJAll.away_homeSER > 2) {
+                explanation.push(homeTeam + " lost half-time and won full-time in the last " + props.homeOBJAll.away_homeSER + " games");
             }
 
 
@@ -4282,12 +4289,12 @@ class SingleBettingBox extends Component {
                 explanation.push(awayTeam + " won half-time and lost full-time in " + chance.a2_perc + "% of their games");
             }
 
-            if (this.props.awayOBJAway.home_awaySER > 2) {
-                explanation.push(awayTeam + " won half-time and lost full-time in the last " + this.props.awayOBJAway.home_awaySER + " away games");
+            if (props.awayOBJAway.home_awaySER > 2) {
+                explanation.push(awayTeam + " won half-time and lost full-time in the last " + props.awayOBJAway.home_awaySER + " away games");
             }
 
-            if (this.props.awayOBJAll.home_awaySER > 2) {
-                explanation.push(awayTeam + " won half-time and lost full-time in the last " + this.props.awayOBJAll.home_awaySER + " games");
+            if (props.awayOBJAll.home_awaySER > 2) {
+                explanation.push(awayTeam + " won half-time and lost full-time in the last " + props.awayOBJAll.home_awaySER + " games");
             }
 
             final = null;
@@ -4307,30 +4314,31 @@ class SingleBettingBox extends Component {
 
 
 
-        this.setState({
-            recomendedObj: recomendedObj,
-            couldTryObj: couldTryObj
+        setState((state) => {
+            return {
+                ...state,
+                recomendedObj: recomendedObj,
+                couldTryObj: couldTryObj
+            }
         });
+
+        
     }
-
-
-    render() {
-
 
         let content = "";
         let result = "";
 
-        if (this.props.final_results.isSet) {
+        if (props.final_results.isSet) {
             result = <div className={classes.result}>
-                Result: {this.props.final_results.result}
+                Result: {props.final_results.result}
             </div>
         }
 
-        if (this.state.recomended) {
+        if (state.recomended) {
 
-            if (this.state.recomendedObj.length > 0) {
+            if (state.recomendedObj.length > 0) {
 
-                let sortedObj = [...this.state.recomendedObj];
+                let sortedObj = [...state.recomendedObj];
 
                 sortedObj.sort((a, b) => {
                     return b.chance - a.chance;
@@ -4352,9 +4360,9 @@ class SingleBettingBox extends Component {
             }
 
         } else {
-            if (this.state.couldTryObj.length > 0) {
+            if (state.couldTryObj.length > 0) {
 
-                let sortedObj = [...this.state.couldTryObj];
+                let sortedObj = [...state.couldTryObj];
 
                 sortedObj.sort((a, b) => {
                     return b.chance - a.chance;
@@ -4381,14 +4389,14 @@ class SingleBettingBox extends Component {
                 <Title name="Betting Tips" />
 
                 <div className={classes.overallButtons}>
-                    <OverallButton o={this.state.recomended} click={this.setRecomended} name="Recommended" />
-                    <OverallButton o={this.state.couldTry} click={this.setCouldTry} name="You Could Try" />
+                    <OverallButton o={state.recomended} click={setRecomended} name="Recommended" />
+                    <OverallButton o={state.couldTry} click={setCouldTry} name="You Could Try" />
                 </div>
                 {result}
                 {content}
             </div>
         );
-    }
 }
+
 
 export default SingleBettingBox;

@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import classes from './StatsLine.module.css';
 
 
-class StatsLine extends Component {
-
-    state = {
+const StatsLine = (props) => {
+    const [state, setState] = useState({
         open: false
-    }
+    });
 
-    styleCalc = (x) => {
+    const styleCalc = (x) => {
 
         if (x < 40) return "gray";
         else if (x < 60) return "black";
@@ -18,36 +17,40 @@ class StatsLine extends Component {
 
 
 
-    toglleOpen = () => {
+    const toglleOpen = () => {
 
-        if (this.state.open) {
-            this.setState({
-                open: false
+        if (state.open) {
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    open: false
+                };
             });
         } else {
-            this.setState({
-                open: true
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    open: true
+                };
             });
         }
 
     }
 
-    render() {
-
-        let br = this.props.br;
-        const txt = this.props.txt;
+        let br = props.br;
+        const txt = props.txt;
         let gameList = null;
         let day = null;
         let dateTemp = null;
         let style = null;
         let temp = "";
-        const teamName = this.props.teamName;
+        const teamName = props.teamName;
         let teamNameHome = classes.teamName;
         let teamNameAway = classes.teamName;
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        if (this.props.gameList.reverse().length > 0 && this.state.open) {
-            gameList = this.props.gameList.map((element, index) => {
+        if (props.gameList.reverse().length > 0 && state.open) {
+            gameList = props.gameList.map((element, index) => {
 
                 dateTemp = new Date(element.gameDate);
                 day = parseInt(dateTemp.getDate()) < 10 ? "0" + dateTemp.getDate() : dateTemp.getDate()
@@ -55,7 +58,7 @@ class StatsLine extends Component {
                 teamNameHome = classes.teamName;
                 teamNameAway = classes.teamName;
          
-                if (this.props.homeAll === "H") {
+                if (props.homeAll === "H") {
                     teamNameAway = classes.teamName + " " + classes.b;
                     if (element.winnerFT === 'a') {
                         temp = classes.W + " " + classes.s;
@@ -102,9 +105,9 @@ class StatsLine extends Component {
             });
         }
 
-        if (this.props.gameList.length === 0 && this.props.setList) {
+        if (props.gameList.length === 0 && props.setList) {
             style = { opacity: "0.4" };
-        } else if (!this.props.setList) {
+        } else if (!props.setList) {
             style = { visibility: "hidden" };
         }
 
@@ -114,10 +117,10 @@ class StatsLine extends Component {
 
         if (br === "NaN") br = "0%";
 
-        if (this.state.open) {
-            content = <li className={classes.StatsLine} onClick={this.toglleOpen}>
+        if (state.open) {
+            content = <li className={classes.StatsLine} onClick={toglleOpen}>
                 <div className={classes.a}>
-                    <div style={{ color: this.styleCalc(br) }} className={classes.br}>{br + "%"}</div>
+                    <div style={{ color: styleCalc(br) }} className={classes.br}>{br + "%"}</div>
                     <div className={classes.txtContainer}>
                         <div className={classes.txt}> {txt} </div>
                         <div className={classes.bottomBorder}><span style={{ width: br + "%" }} /></div>
@@ -128,9 +131,9 @@ class StatsLine extends Component {
                 <div className={classes.gameList}>{gameList}</div>
             </li>;
         } else {
-            if (this.props.gameList.length > 0) {
-                content = <li className={classes.StatsLine} onClick={this.toglleOpen}>
-                    <div style={{ color: this.styleCalc(br) }} className={classes.br}>{br + "%"}</div>
+            if (props.gameList.length > 0) {
+                content = <li className={classes.StatsLine} onClick={toglleOpen}>
+                    <div style={{ color: styleCalc(br) }} className={classes.br}>{br + "%"}</div>
                     <div className={classes.txtContainer}>
                         <div className={classes.txt}> {txt} </div>
                         <div className={classes.bottomBorder}><span style={{ width: br + "%" }} /></div>
@@ -140,7 +143,7 @@ class StatsLine extends Component {
                 </li>;
             } else {
 
-                if (this.props.setList) {
+                if (props.setList) {
                     content = <li className={classes.StatsLine}>
                         <div className={classes.br}>{"0%"}</div>
                         <div className={classes.txtContainer}> {txt} </div>
@@ -164,7 +167,6 @@ class StatsLine extends Component {
         return (
             content
         );
-    }
 }
 
 export default StatsLine;

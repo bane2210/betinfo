@@ -5,10 +5,9 @@ import App from "./App";
 // import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import {
-  createStore /* ,applyMiddleware, compose, combineReducers */,
-} from "redux";
-import reducer from "./store/reducers/reducers";
+import store from "./store/store";
+
+// import reducer from "./store/reducers/reducers";
 import axios from "axios";
 
 import ReactGA from "react-ga";
@@ -21,7 +20,7 @@ axios.defaults.baseURL = "http://betinfo.cc";
 
 // const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
-const store = createStore(reducer);
+// const store = createStore(reducer);
 
 const trackingId = "UA-168991469-1"; // Replace with your Google Analytics tracking ID
 ReactGA.initialize(trackingId);

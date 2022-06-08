@@ -1,88 +1,71 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { backdropAction } from "../../store/createSlice";
 
-import classes from './MatchSingle.module.css'
-import Aux from '../AuxAux/AuxAux';
+import classes from "./MatchSingle.module.css";
+import Aux from "../AuxAux/AuxAux";
 
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga";
 
+const MatchSingle = (props) => {
+  const dispatch = useDispatch();
 
-class MatchSingle extends Component {
+  const openBackdrop = (backdropOBJ) => {
+    ReactGA.event({
+      category: "Games",
+      action: "Clicked",
+      label: props.h + " vs " + props.a,
+    });
 
+    const yPos = document.getElementById("body").getBoundingClientRect().top;
+    /*
+    const back = document.getElementById("backdrop");
+    if (back !== null) back.style.display = "flex";
+    document.getElementById("body").style.display = "none";
+    */
 
+    dispatch(backdropAction({ backdropOBJ: backdropOBJ, yPos: yPos, backVis: 1 }));
 
-    openBackdrop(backdropOBJ) {
+    //props.backdropSet(backdropOBJ, yPos);
+    /*window.location.hash = "game";*/
+  };
+  //console.log(props);
+  const backdropOBJ = {
+    date: props.date.toString(),
+    time: props.t,
+    home: props.h,
+    away: props.a,
+    country: props.country,
+    competition: props.comp,
+    simpleDate: props.simpleDate,
+  };
 
-        ReactGA.event({
-            category: "Games",
-            action: "Clicked",
-            label: this.props.h + " vs " + this.props.a,
-          });
+  return (
+    <Aux>
+      <div
+        className={classes.Container}
+        onClick={() => openBackdrop(backdropOBJ)}
+      >
+        <div className={classes.Date}>{props.t}</div>
+        <div className={classes.GameInfo}>
+          <div className={classes.homeTeam}>{props.h}</div>
+          <div className={classes.vs}>{" vs "}</div>
+          <div className={classes.awayTeam}>{props.a}</div>
+        </div>
+        <span className={classes.tooltiptext}>Click for full details!</span>
+      </div>
+    </Aux>
+  );
+};
 
-        const yPos = document.getElementById("body").getBoundingClientRect().top;
-        const back = document.getElementById("backdrop");
-        
-        if (back !== null) back.style.display = "flex";
-        document.getElementById("body").style.display = "none";
+export default MatchSingle;
 
-        this.props.backdropSet(backdropOBJ, yPos);
-        /*window.location.hash = "game";*/
-
-
-    }
-
-
-
-
-    render() {
-
-        let backdropOBJ = {
-            date: this.props.date,
-            time: this.props.t,
-            home: this.props.h,
-            away: this.props.a,
-            country: this.props.country,
-            competition: this.props.comp,
-            simpleDate: this.props.simpleDate
-        }
-
-        return (
-
-            <Aux>
-                < div className={classes.Container} onClick={() => this.openBackdrop(backdropOBJ)} >
-                    <div className={classes.Date}>
-                        {this.props.t}
-                    </div>
-                    <div className={classes.GameInfo}>
-                        <div className={classes.homeTeam}>
-                            {this.props.h}
-                        </div>
-                        <div className={classes.vs}>
-                            {' vs '}
-                        </div>
-                        <div className={classes.awayTeam}>
-                            {this.props.a}
-                        </div>
-                    </div>
-                    <span className={classes.tooltiptext}>Click for full details!</span>
-                </div >
-            </Aux>
-
-
-        );
-
-    }
-
-
-}
-
-
-
+/*
 const mapDispatchToProps = dispatch => {
     return {
         backdropSet: (backdropOBJ, yPos) => dispatch({ type: "backdropSet", data: backdropOBJ, yPos: yPos })
     }
 }
+*/
 
-
-export default connect(null, mapDispatchToProps)(MatchSingle);
+// export default connect(null, mapDispatchToProps)(MatchSingle);

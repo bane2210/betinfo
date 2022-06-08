@@ -1,38 +1,39 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import classes from './tipsLine.module.css';
 import wrong from '../../../../assets/images/wrong.png';
 import correct from '../../../../assets/images/correct_250.png';
 
 
-class TipsLine extends Component {
-
-    state = {
+const TipsLine = (props) => {
+    const [state, setState] = useState({
         open: false
-    }
+    });
 
-    openClose = () => {
-        if (this.state.open) {
-            this.setState({
-                open: false
+    const openClose = () => {
+        if (state.open) {
+            setState(() => {
+                return {
+                    open: false
+                };
             });
         } else {
-            this.setState({
-                open: true
+            setState(() => {
+                return {
+                    open: true
+                };
             });
 
         }
     }
 
-
-    render() {
         let content = "";
         let final = "";
         let style = "white";
         let opacityStyle = "1.0";
 
-        if (this.props.final !== null) {
+        if (props.final !== null) {
 
-            if (this.props.final) {
+            if (props.final) {
                 final = <div className={classes.final}>
                     <img className={classes.correct} src={correct} alt="correct" />
                 </div>;
@@ -46,20 +47,20 @@ class TipsLine extends Component {
             }
         }
 
-        if (this.state.open) {
-            let explanation = this.props.explanation.map((element, index) => {
+        if (state.open) {
+            let explanation = props.explanation.map((element, index) => {
                 return <div key={index} className={classes.explanationLine}>{element}</div>
             });
 
             content = <div className={classes.tipsLineContainer}>
-                <div className={classes.tipsLine} onClick={this.openClose} style={{ border: "1px solid " + style }}>
+                <div className={classes.tipsLine} onClick={openClose} style={{ border: "1px solid " + style }}>
                     {final}
-                    <div className={classes.tip}>{this.props.tip}</div>
+                    <div className={classes.tip}>{props.tip}</div>
                     <div className={classes.chance}>
                         <div className={classes.chanceBack} >
-                            <div style={{ width: this.props.chance + "%", opacity: opacityStyle }} className={classes.chanceFront} />
+                            <div style={{ width: props.chance + "%", opacity: opacityStyle }} className={classes.chanceFront} />
                         </div>
-                    Chance: <span className={classes.chanceBr}> {this.props.chance + "%"} </span>
+                    Chance: <span className={classes.chanceBr}> {props.chance + "%"} </span>
                     </div>
                     <div className={classes.explanationTxt}>Explanation <i style={{ fontSize: "11px" }} className="fa fa-arrow-down" aria-hidden="true"></i></div>
                     <div className={classes.explanation}>{explanation}</div>
@@ -67,14 +68,14 @@ class TipsLine extends Component {
             </div>;
         } else {
             content = <div className={classes.tipsLineContainer}>
-                <div className={classes.tipsLine} onClick={this.openClose} style={{ border: "1px solid " + style }}>
+                <div className={classes.tipsLine} onClick={openClose} style={{ border: "1px solid " + style }}>
                     {final}
-                    <div className={classes.tip}>{this.props.tip}</div>
+                    <div className={classes.tip}>{props.tip}</div>
                     <div className={classes.chance}>
                         <div className={classes.chanceBack} >
-                            <div style={{ width: this.props.chance + "%", opacity: opacityStyle }} className={classes.chanceFront} />
+                            <div style={{ width: props.chance + "%", opacity: opacityStyle }} className={classes.chanceFront} />
                         </div>
-                    Chance: <span className={classes.chanceBr}> {this.props.chance + "%"} </span>
+                    Chance: <span className={classes.chanceBr}> {props.chance + "%"} </span>
                     </div>
                     <div className={classes.explanationTxt}>Explanation <i style={{ fontSize: "11px" }} className="fa fa-arrow-right" aria-hidden="true"></i></div>
                 </div>
@@ -84,7 +85,6 @@ class TipsLine extends Component {
         return (
             content
         );
-    }
 
 }
 

@@ -10,7 +10,7 @@ const subscribePage = (props) => {
 
     return (
         window.scrollTo(0, 0),
-        console.log("<subscribePage>"),
+        // console.log("<subscribePage>"),
         <div className={classes.SubscribePage}>
             Enjoy, there are no subscriptions at the moment!
         </div>

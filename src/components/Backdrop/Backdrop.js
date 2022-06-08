@@ -9,6 +9,8 @@ import Table from "../Table/Table";
 import BackdropClose from "./BackdropClose";
 // import { useNavigate } from "react-router-dom";
 import SingleBettingBox from "./SingleBettingBox/SingleBettingBox";
+import { useDispatch } from "react-redux";
+import { closeBackdrop } from "../../store/createSlice";
 
 const Backdrop = (props) => {
   const [state, setState] = useState({
@@ -29,6 +31,7 @@ const Backdrop = (props) => {
     table: "",
     spinner: true,
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // http://betinfo.cc/api_stats/singleMatch.php?country=DENMARK&comp=2.%20DIVISION&home=Middelfart%20G%20&%20BK&away=Hellerup%20IK
@@ -44,36 +47,59 @@ const Backdrop = (props) => {
     axios.get(url).then((response) => {
       complexStats(response.data);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!state.spinner) {
-        setState({
-          spinner: true,
-        });
-      }
-
-      const url =
-        "/api_stats/singleMatch.php?country=" +
-        encodeURIComponent(props.country) +
-        "&comp=" +
-        encodeURIComponent(props.comp) +
-        "&home=" +
-        encodeURIComponent(props.h) +
-        "&away=" +
-        encodeURIComponent(props.a);
-      axios.get(url).then((response) => {
-        complexStats(response.data);
+      setState({
+        spinner: true,
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+
+    const url =
+      "/api_stats/singleMatch.php?country=" +
+      encodeURIComponent(props.country) +
+      "&comp=" +
+      encodeURIComponent(props.comp) +
+      "&home=" +
+      encodeURIComponent(props.h) +
+      "&away=" +
+      encodeURIComponent(props.a);
+    axios.get(url).then((response) => {
+      complexStats(response.data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.country, props.comp, props.h, props.a]);
 
- // const navigate = useNavigate();
-  
+  // const navigate = useNavigate();
+
   const goback = () => {
+
+    // window.scrollTo(0, 0 - props.yPos);
+
+    dispatch(
+      closeBackdrop({
+        backdropOBJ: {
+          date: "",
+          time: "",
+          home: "",
+          away: "",
+          country: "",
+          competition: "",
+          simpleDate: "",
+        },
+        backVis: 0,
+      })
+    );
+
+    /*
+
     document.getElementById("backdrop").style.display = "none";
     document.getElementById("body").style.display = "block";
-    window.scrollTo(0, 0 - props.yPos);
+    */
+    // document.getElementById("body").style.display = "block";
+
     /*  window.location.href = window.location.href.substr(0, window.location.href.indexOf('#'));*/
   };
 
@@ -4386,7 +4412,7 @@ const Backdrop = (props) => {
     });
   };
 
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
 
   let content = (
     <div className={classes.spinnerBox}>

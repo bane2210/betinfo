@@ -47,7 +47,8 @@
     padding-bottom: 5px;
     position: relative;
     font-weight: 400;
-    border: 1px solid #c5c0c0;
+    border: 1px solid #0e0c0c;
+    cursor: pointer;
 
 
 }
@@ -89,9 +90,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
+    font-size: 16px;
     padding: 2px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .tipInner {
@@ -137,6 +138,7 @@
     width: 110px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .explanation {
@@ -217,18 +219,25 @@
 
 .FullDetails {
     width: 180px;
-    margin: 5px auto 0px auto;
+    margin: 5px auto 5px auto;
     background-color: #000;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 1px 0;
+    padding: 5px 0;
     font-size: 12px;
     height: 20px;
     cursor: pointer;
+    line-height: 100%;
 }
 
-
+.dottedLine {
+    width: 90%;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    margin: 16px auto 8px auto;
+    color: #ccc;
+}
 
 
 @media (max-width: 700px) {

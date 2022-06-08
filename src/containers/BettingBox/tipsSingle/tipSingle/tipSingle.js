@@ -3,7 +3,7 @@ import classes from './tipSingle.module.css';
 
 import GamesCount from '../../gamesCount/gamesCount';
 
-const tipSingle = (props) => {
+const TipSingle = (props) => {
 
     let style = classes.TipBlock;
     if(props.current === props.nameSQL){
@@ -19,4 +19,4 @@ const tipSingle = (props) => {
     );
 }
 
-export default tipSingle;
+export default TipSingle;
