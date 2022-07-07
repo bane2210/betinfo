@@ -1,20 +1,13 @@
-import React from "react";
-import classes from "./NavDatesItem.module.css";
-
-const navDatesItem = (props) => {
-
-  return (
-    <div
-      className={
-        parseInt(props.pos) === parseInt(props.position)
-          ? classes.activ
-          : classes.Items
-      }
-      onClick={() => props.change(props.date, props.pos)}
-    >
-      {props.name}
-    </div>
-  );
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
-export default navDatesItem;
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const NavDatesItem_module_css_1 = __importDefault(require("./NavDatesItem.module.css"));
+const navDatesItem = (props) => {
+    return ((0, jsx_runtime_1.jsx)("div", Object.assign({ className: parseInt(props.pos) === props.position
+            ? NavDatesItem_module_css_1.default.activ
+            : NavDatesItem_module_css_1.default.Items, onClick: () => props.change(props.date, props.pos) }, { children: props.name })));
+};
+exports.default = navDatesItem;

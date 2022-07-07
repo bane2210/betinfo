@@ -1,41 +1,24 @@
-import React from 'react';
-import classes from './oddsTimeButton.module.css';
-
-import correct from '../../../../../assets/images/correct_250.png';
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const oddsTimeButton_module_css_1 = __importDefault(require("./oddsTimeButton.module.css"));
+const correct_250_png_1 = __importDefault(require("../../../../../assets/images/correct_250.png"));
 const oddsTimeButton = (props) => {
-
-    let style = classes.container;
+    let style = oddsTimeButton_module_css_1.default.container;
     let name = props.name;
-
-    if(props.type === 2) {
-
+    if (props.type === 2) {
         name = "Next " + props.name + "h";
-
     }
-
     if (props.yesNo) {
-        style = classes.container + " " + classes.Active;
+        style = oddsTimeButton_module_css_1.default.container + " " + oddsTimeButton_module_css_1.default.Active;
     }
-
     let yesNo = "";
-
     if (props.yesNo) {
-        yesNo = <div className={classes.final}>
-            <img className={classes.correct} src={correct} alt="correct" />
-        </div>;
+        yesNo = ((0, jsx_runtime_1.jsx)("div", Object.assign({ className: oddsTimeButton_module_css_1.default.final }, { children: (0, jsx_runtime_1.jsx)("img", { className: oddsTimeButton_module_css_1.default.correct, src: correct_250_png_1.default, alt: "correct" }) })));
     }
-
-    return (
-        <div className={style} onClick={props.oddsTimeClick}>
-            <div className={classes.content} >
-                {name}
-            </div>
-            {yesNo}
-        </div>
-    );
-
-
-}
-
-export default oddsTimeButton;
+    return ((0, jsx_runtime_1.jsxs)("div", Object.assign({ className: style, onClick: props.oddsTimeClick }, { children: [(0, jsx_runtime_1.jsx)("div", Object.assign({ className: oddsTimeButton_module_css_1.default.content }, { children: name })), yesNo] })));
+};
+exports.default = oddsTimeButton;

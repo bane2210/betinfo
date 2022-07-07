@@ -1,22 +1,16 @@
-import React from 'react';
-import classes from './tips.module.css';
-
-import GamesCount from '../gamesCount/gamesCount';
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const tips_module_css_1 = __importDefault(require("./tips.module.css"));
+const gamesCount_1 = __importDefault(require("../gamesCount/gamesCount"));
 const tips = (props) => {
-
-    let style = classes.TipBlock;
+    let style = tips_module_css_1.default.TipBlock;
     if (props.current === props.name) {
-        style = classes.TipBlock + " " + classes.Active;
+        style = tips_module_css_1.default.TipBlock + " " + tips_module_css_1.default.Active;
     }
-
-
-    return (
-        <div className={style} onClick={props.click}>
-            {props.name}
-            <GamesCount isBig={true} count={props.gamesCount} />
-        </div>
-    );
-}
-
-export default tips;
+    return ((0, jsx_runtime_1.jsxs)("div", Object.assign({ className: style, onClick: props.click }, { children: [props.name, (0, jsx_runtime_1.jsx)(gamesCount_1.default, { isBig: true, count: props.gamesCount })] })));
+};
+exports.default = tips;

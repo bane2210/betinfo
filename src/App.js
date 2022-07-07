@@ -1,12 +1,11 @@
-import React from "react";
-import Body from "./containers/Body/Body";
-
-const App = () => {
-  return (
-    <div>
-        <Body />
-    </div>
-  );
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
-export default App;
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const Body_1 = __importDefault(require("./containers/Body/Body"));
+const App = () => {
+    return ((0, jsx_runtime_1.jsx)("div", { children: (0, jsx_runtime_1.jsx)(Body_1.default, {}) }));
+};
+exports.default = App;
